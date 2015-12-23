@@ -1,171 +1,136 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 
-namespace GeometricShape
+namespace Shape
 {
-    interface ISide
-    {
-        int Length { get; set; }
-    }
-
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
+            Circle crc = new Circle(5);
+            Console.WriteLine("Площадь {0} = {1} периметр = {2}", Circle.Name, crc.CalculateArea(), crc.CalculatePerimeter());
+            Triangle tr = new Triangle(3,3,3);
+            Console.WriteLine("Площадь {0} = {1} периметр = {2}", Triangle.Name, tr.CalculateArea(), tr.CalculatePerimeter());
+            Rectangle rec = new Rectangle(3, 3);
+            Console.WriteLine("Площадь {0} = {1} периметр = {2}", Rectangle.Name, rec.CalculateArea(), rec.CalculatePerimeter());
+            Console.ReadLine();
 
-        }
-    }
-
-   public class Side : ISide
-    {
-
-        public int Length { get; set; }
-        public Side(int length)
-        {
-            Length = length;
         }
     }
 
     abstract class Shape
     {
-        public Side lengt {get;set;}
-        public double Area { get; set; }
-        public double Perimeter { get; set; }
-        public virtual void CalculateArea() { }
-        public virtual void CalculatePerimeter() { }
+        public abstract double CalculateArea();
+        public abstract double CalculatePerimeter();
     }
 
     class Circle : Shape
     {
-        public static readonly string Name;
         public double Radius { get; private set; }
-
+        public static readonly string Name;
 
         static Circle()
         {
-            Console.WriteLine("Введите имя круга:");
+            Console.WriteLine("Введите имя круга");
             Name = Console.ReadLine();
         }
-
         public Circle(double radius)
         {
             if (radius > 0)
                 Radius = radius;
             else
-                throw new Exception("Не может быть отрицательное значение радиуса");
+                throw new Exception("Радиус не может быть отрицателььным числом");
         }
 
-        public override void CalculateArea()
+        public override double CalculateArea()
         {
-            Area = Radius * Radius * Math.PI;
+            return Radius * Radius * Math.PI;
         }
 
-        public override void CalculatePerimeter()
+        public override double CalculatePerimeter()
         {
-            Perimeter = 2 * Math.PI * Radius;
+            return 2 * Math.PI * Radius;
         }
-
     }
-
-    class Rectangle : Shape
-    {
-        Dictionary<char, ISide> side = new Dictionary<char, ISide>();
-
-        public static readonly string Name;
-
-        static Rectangle()
-        {
-            Console.WriteLine("Введите имя круга:");
-            Name = Console.ReadLine();
-        }
-
-
-        public Rectangle(ISide a, int length)
-        {
-            if (length > 0)
-                side.Add('a', new Side(length));
-            else
-                throw new Exception("Длина стороны не может быть отрицательным числом");
-        }
-
-        public Rectangle(ISide a, ISide b, int length, int width)
-        {
-            if (length > 0 && width > 0)
-            {
-                side.Add('a', new Side(length));
-                side.Add('b', new Side(width));
-            }
-            else
-                throw new Exception("Длинна не может быть отрицательным числом");
-        }
-
-            
-
-        public override void CalculateArea()
-        {
-            Area = a.Length * a.Length;
-        }
-        public  void CalculateArea(ISide a, ISide b)
-        {
-            Area = a.Length * b.Length;
-        }
-
-        public override void CalculatePerimeter(ISide a)
-        {
-            Perimeter = a.Length * 4;
-        }
-
-        public override void CalculatePerimeter(ISide a, ISide b)
-        {
-            Perimeter = (a.Length + b.Length) * 2;
-        }
-
-    }
-
 
     class Triangle : Shape
     {
         public static readonly string Name;
-        Dictionary<char, ISide> side = new Dictionary<char, ISide>();
+        public double SideA { get; private set; }
+        public double SideB { get; private set; }
+        public double SideC { get; private set; }
 
         static Triangle()
         {
-            Console.WriteLine("Введите имя круга:");
+            Console.WriteLine("Введите имя треугольника");
             Name = Console.ReadLine();
         }
 
-        public Triangle(ISide a ,int length)
+        public Triangle(double sideA, double sideB, double sideC)
         {
-            if (length > 0)
-                side.Add('a', new Side(length));
-            else
-                throw new Exception("Сторона не может быть отрицательным числом");
-        }
-
-        public Triangle(ISide a, ISide b, ISide c, int a_length, int b_length, int c_length)
-        {
-            if (a_length > 0 && b_length > 0 && c_length > 0)
+            if (sideA > 0 && sideB > 0 && sideC > 0)
             {
-                side.Add('a', new Side(a_length));
-                side.Add('b', new Side(b_length));
-                side.Add('c', new Side(c_length));
+                SideA = sideA;
+                SideB = sideB;
+                SideC = sideC;
             }
             else
+            {
                 throw new Exception("Сторона не может быть отрицательным числом");
+            }
+            CheckTriangle();
         }
 
-        public void CheckTriangle(ISide a, ISide b, ISide c)                                // проверка на возможность существования
+        public void CheckTriangle()
         {
-            if (a.Length < b.Length + c.Length && b.Length < a.Length + c.Length && c.Length < a.Length + b.Length)
-                Console.WriteLine("Такой треугольник может сущестовать");
+            if (SideA < SideB + SideC && SideB < SideA + SideC && SideC < SideA + SideB)
+                Console.WriteLine("Такой треуголник может существовать");
             else
-                throw new Exception("Треугольник с такими сторонами существовать не может");
+                throw new Exception("Треугольник с такими сторонами не может существовать");
         }
-       
+
+        public override double CalculateArea()
+        {
+            return (SideA + SideB + SideC)/2;
+        }
+
+        public override double CalculatePerimeter()
+        {
+            return SideA + SideB + SideC;
+        }
     }
 
+    class Rectangle : Shape
+    {
+        public double SideA { get; private set; }
+        public double SideB { get; private set; }
+        public static readonly string Name;
 
+        static Rectangle()
+        {
+            Console.WriteLine("Введите имя прямоугольника");
+            Name = Console.ReadLine();
+        }
+        public Rectangle(double sideA, double sideB)
+        {
+            if (sideA > 0 && sideB > 0)
+            {
+                SideA = sideA;
+                SideB = sideB;
+            }
+            else
+            {
+                throw new Exception("Длинна стороны не может быть отрицательной");
+            }
+        }
+        public override double CalculateArea()
+        {
+            return SideA * SideB;
+        }
+
+        public override double CalculatePerimeter()
+        {
+            return SideA * 4;
+        }
+    }
 }
+
