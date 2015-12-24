@@ -6,17 +6,22 @@ namespace Shape
     {
         static void Main()
         {
-            Circle crc = new Circle(5);
-            Console.WriteLine("Площадь {0} = {1} периметр = {2}", Circle.Name, crc.CalculateArea(), crc.CalculatePerimeter());
-            Triangle tr = new Triangle(3,3,3);
-            Console.WriteLine("Площадь {0} = {1} периметр = {2}", Triangle.Name, tr.CalculateArea(), tr.CalculatePerimeter());
-            Rectangle rec = new Rectangle(3, 3);
-            Console.WriteLine("Площадь {0} = {1} периметр = {2}", Rectangle.Name, rec.CalculateArea(), rec.CalculatePerimeter());
+            double Sum = 0;
+            Shape[] shapes = new Shape[5];
+            shapes[0] = new Circle(2);
+            shapes[1] = new Triangle(4, 6, 5);
+            shapes[2] = new Rectangle(2);
+            shapes[3] = new Rectangle(2, 4);
+            shapes[4] = new Triangle(3, 3, 4);
+            for (int i = 0; i < shapes.Length; i++)
+            {
+                Console.WriteLine(shapes[i].CalculateArea());
+                Sum += shapes[i].CalculateArea();
+            }
+            Console.WriteLine("Общая площадь = {0} ", Sum.ToString());
             Console.ReadLine();
-
         }
     }
-
     abstract class Shape
     {
         public abstract double CalculateArea();
@@ -55,9 +60,41 @@ namespace Shape
     class Triangle : Shape
     {
         public static readonly string Name;
-        public double SideA { get; private set; }
-        public double SideB { get; private set; }
-        public double SideC { get; private set; }
+        private double _sideA;
+        private double _sideB;
+        private double _sideC;
+        public double SideA
+        {
+            get { return _sideA; }
+            set
+            {
+                if (CheckTriangle(value, SideB, SideC))
+                {
+                    _sideA = value;
+                }
+
+            }
+        }
+        public double SideB
+        {
+            get { return _sideB; }
+            set
+            {
+                if (CheckTriangle(SideA, value, SideC))
+                    _sideB = value;
+            }
+        }
+        public double SideC
+        {
+            get { return _sideC; }
+            set
+            {
+                if (CheckTriangle(SideA, SideB, value))
+                {
+                    _sideC = value;
+                }
+            }
+        }
 
         static Triangle()
         {
@@ -67,30 +104,27 @@ namespace Shape
 
         public Triangle(double sideA, double sideB, double sideC)
         {
-            if (sideA > 0 && sideB > 0 && sideC > 0)
+            if (CheckTriangle(sideA, sideB, sideC))
             {
-                SideA = sideA;
-                SideB = sideB;
-                SideC = sideC;
+                _sideA = sideA;
+                _sideB = sideB;
+                _sideC = sideC;
             }
             else
-            {
-                throw new Exception("Сторона не может быть отрицательным числом");
-            }
-            CheckTriangle();
+                Console.WriteLine("Такой треугольник существовать не может");
+        }
+        public Triangle()
+        {
         }
 
-        public void CheckTriangle()
+        private bool CheckTriangle(double sideA, double sideB, double sideC)
         {
-            if (SideA < SideB + SideC && SideB < SideA + SideC && SideC < SideA + SideB)
-                Console.WriteLine("Такой треуголник может существовать");
-            else
-                throw new Exception("Треугольник с такими сторонами не может существовать");
+            return sideA < sideB + sideC && sideB < sideA + sideC && sideC < sideA + sideB;
         }
 
         public override double CalculateArea()
         {
-            return (SideA + SideB + SideC)/2;
+            return (_sideA + _sideB + _sideC) / 2;
         }
 
         public override double CalculatePerimeter()
@@ -122,6 +156,16 @@ namespace Shape
                 throw new Exception("Длинна стороны не может быть отрицательной");
             }
         }
+
+        public Rectangle(double side)
+        {
+            if (side > 0)
+            {
+                SideA = side;
+                SideB = side;
+            }
+        }
+
         public override double CalculateArea()
         {
             return SideA * SideB;
