@@ -84,6 +84,7 @@ namespace Shape
                     _sideB = value;
             }
         }
+ 
         public double SideC
         {
             get { return _sideC; }
