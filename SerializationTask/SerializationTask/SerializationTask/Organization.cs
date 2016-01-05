@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Reflection;
 
 
 namespace SerializationTask
@@ -12,6 +11,8 @@ namespace SerializationTask
         public string OrganizationName { get; set; }
 
         public string Adress { get; set; }
+          
+
 
         public Organization() { }
 

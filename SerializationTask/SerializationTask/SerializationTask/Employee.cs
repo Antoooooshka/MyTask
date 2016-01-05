@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Reflection;
 
 namespace SerializationTask
 {
@@ -34,6 +35,8 @@ namespace SerializationTask
         public void ReadXml(System.Xml.XmlReader reader)
         {
             Organization = new Organization();
+            Type t = Organization.GetType();
+            MethodInfo mi = t.GetMethod("ReadXml");
             if (reader.MoveToContent() == XmlNodeType.Element)
             {
                 reader.ReadStartElement();
