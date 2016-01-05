@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace SerializationTask
@@ -32,12 +33,23 @@ namespace SerializationTask
 
         public void ReadXml(System.Xml.XmlReader reader)
         {
-            reader.MoveToContent();
+            Organization = new Organization();
+            if (reader.MoveToContent() == XmlNodeType.Element)
+            {
+                reader.ReadStartElement();
+                Age = Convert.ToInt32(reader.ReadElementContentAsString("Age",""));
+                Name = reader.ReadElementContentAsString("Name","");
+                Gender = reader.ReadElementContentAsString("Gender", "");
+                Organization.ReadXml(reader);
+            }
         }
 
         public void WriteXml(System.Xml.XmlWriter writer)
         {
-            throw new NotImplementedException();
+            writer.WriteElementString("Age", Age.ToString());
+            writer.WriteElementString("Name", Name);
+            writer.WriteElementString("Gender", Gender);
+            Organization.WriteXml(writer);
         }
     }
 }

@@ -42,7 +42,7 @@ namespace SerializationTask
             {
                 binaryFormatter.Serialize(fs, employee);
             }
-            Console.WriteLine("Объъект сериализован");
+            Console.WriteLine("Объект сериализован");
         }
 
         public Employee BinnaryDeSerializerMethod(string fileName)

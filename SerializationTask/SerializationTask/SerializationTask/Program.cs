@@ -13,26 +13,27 @@ namespace SerializationTask
     {
         static void Main()
         {
-            Organization artezio = new Organization("Artezio","cool adress");
-            Employee emp = new Employee(24, "Anton", "Male", artezio);
-            Services serv = new Services("Employee.xml");
+            Organization artezio = new Organization("Artezioooo","cool adress");
+            Employee emp = new Employee(24, "Antonnnn", "Male", artezio);
+            Services serv = new Services();
 
             Employee emp2 = new Employee();
 
-            serv.BinnarySerializermethod(emp);
+            serv.XmlSerializerMethod(emp,"file.xml");
+            emp2 = serv.XmlDeSerializerMethod("file.xml");
 
-            emp2 = serv.BinnaryDeSerializerMethod();
+            Console.WriteLine(emp2.Name + emp2.Organization.OrganizationName);
+              
 
             Console.WriteLine(emp2.Name);
-            Console.WriteLine(emp2.Organization.OrganizationName);
             Console.ReadLine();
 
 
 
         }
 
-       
 
-       
+
+
     }
 }
