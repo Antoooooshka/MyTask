@@ -2,6 +2,7 @@
 using System.IO;
 using System.Xml.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Reflection;
 
 namespace SerializationTask
 {

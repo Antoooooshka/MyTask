@@ -22,13 +22,9 @@ namespace SerializationTask
             serv.XmlSerializerMethod(emp,"file.xml");
             emp2 = serv.XmlDeSerializerMethod("file.xml");
 
-            Console.WriteLine(emp2.Name + emp2.Organization.OrganizationName);
-              
-
-            Console.WriteLine(emp2.Name);
+            Console.WriteLine("Age {0}, Name {1}, OrganizationName {2}", emp2.Age, emp2.Name, emp2.Organization.OrganizationName);
+            
             Console.ReadLine();
-
-
 
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -32,8 +33,14 @@ namespace SerializationTask
         {
             reader.MoveToContent();
             reader.ReadStartElement();
-            OrganizationName = reader.ReadElementContentAsString("OrganizationName", "");
-            Adress = reader.ReadElementString("Adress");
+            PropertyInfo[] prop = this.GetType().GetProperties();
+
+            for (int i = 0; i < prop.Length; i++)
+            {
+                string val = reader.ReadElementContentAsString(prop[i].Name, "");
+                prop[i].SetValue(this, val);
+            }
+
             reader.ReadEndElement();
 
         }
