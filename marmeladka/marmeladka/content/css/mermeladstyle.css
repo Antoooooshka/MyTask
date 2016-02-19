@@ -1,0 +1,9 @@
+body{
+	background-image: url("./content/img/back.png");
+}
+#bodyContainer{
+}
+#logo{
+    background-image: url("./content/img/logo1.png");
+	margin-left: 50px;
+}
