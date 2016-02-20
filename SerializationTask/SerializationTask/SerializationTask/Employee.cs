@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace SerializationTask
@@ -8,16 +9,19 @@ namespace SerializationTask
     [Serializable]
     public class Employee : IXmlSerializable
     {
-        
+
         public int Age { get; set; }
-        
+
         public string Name { get; set; }
-        
+
         public string Gender { get; set; }
-        
+
         public Organization Organization { get; set; }
 
-        public Employee() { }
+        public Employee()
+        {
+            Organization = new Organization();
+        }
 
         public Employee(int age, string name, string gender, Organization organiz)
         {
@@ -34,25 +38,38 @@ namespace SerializationTask
 
         public void ReadXml(System.Xml.XmlReader reader)
         {
-            Organization = new Organization();
-            Type t = Organization.GetType();
-            MethodInfo mi = t.GetMethod("ReadXml");
-            if (reader.MoveToContent() == XmlNodeType.Element)
+            PropertyInfo[] prop = this.GetType().GetProperties();
+
+            reader.MoveToContent();
+            reader.ReadStartElement();
+
+            for (int i = 0; i < prop.Length; i++)
             {
-                reader.ReadStartElement();
-                Age = Convert.ToInt32(reader.ReadElementContentAsString("Age",""));
-                Name = reader.ReadElementContentAsString("Name","");
-                Gender = reader.ReadElementContentAsString("Gender", "");
-                Organization.ReadXml(reader);
+                if (prop[i].PropertyType == typeof(string))
+                {
+                    string temp = reader.ReadElementContentAsString(prop[i].Name, "");
+                    prop[i].SetValue(this, temp);
+                }
+                else if (prop[i].PropertyType == typeof(Organization))
+                {
+                    Organization.ReadXml(reader);
+                }
+                else if (prop[i].PropertyType == typeof(int))
+                {
+                    int temp = reader.ReadElementContentAsInt(prop[i].Name, "");
+                    prop[i].SetValue(this, temp);
+                }
             }
+
         }
 
         public void WriteXml(System.Xml.XmlWriter writer)
         {
-            writer.WriteElementString("Age", Age.ToString());
+            writer.WriteElementString("Age",Age.ToString());
             writer.WriteElementString("Name", Name);
             writer.WriteElementString("Gender", Gender);
             Organization.WriteXml(writer);
         }
+
     }
 }
