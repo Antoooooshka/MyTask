@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "marmeladka", "marmeladka\marmeladka.csproj", "{00E613DF-0B4F-4721-9A1A-CFCA8494988B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{E40DC8E6-709F-4C7A-9091-4B7E869A85D9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB", "DB", "{B98FA959-671E-4917-8F72-8B3323407B79}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{CD65AB77-46D6-4D74-BC26-301B26951A94}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{D8E826FC-4B1F-403F-A0BA-F68CD408D4F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "marmeladka.infrastructure", "marmeladka.infrastructure\marmeladka.infrastructure.csproj", "{3A3A76D8-8592-4345-BD89-29ED0C381827}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "marmeladka.core", "marmeladka.core\marmeladka.core.csproj", "{FFF77024-3A8C-4C94-ACFC-9119E8B36D8A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{00E613DF-0B4F-4721-9A1A-CFCA8494988B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00E613DF-0B4F-4721-9A1A-CFCA8494988B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00E613DF-0B4F-4721-9A1A-CFCA8494988B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00E613DF-0B4F-4721-9A1A-CFCA8494988B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A3A76D8-8592-4345-BD89-29ED0C381827}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A3A76D8-8592-4345-BD89-29ED0C381827}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A3A76D8-8592-4345-BD89-29ED0C381827}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A3A76D8-8592-4345-BD89-29ED0C381827}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFF77024-3A8C-4C94-ACFC-9119E8B36D8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFF77024-3A8C-4C94-ACFC-9119E8B36D8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFF77024-3A8C-4C94-ACFC-9119E8B36D8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFF77024-3A8C-4C94-ACFC-9119E8B36D8A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{00E613DF-0B4F-4721-9A1A-CFCA8494988B} = {E40DC8E6-709F-4C7A-9091-4B7E869A85D9}
+		{FFF77024-3A8C-4C94-ACFC-9119E8B36D8A} = {CD65AB77-46D6-4D74-BC26-301B26951A94}
+		{3A3A76D8-8592-4345-BD89-29ED0C381827} = {D8E826FC-4B1F-403F-A0BA-F68CD408D4F7}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d3838aa3d8f9480aa5db3fbd86e59356" Name="Diagram1">
+        <EntityTypeShape EntityType="marmeladkaDBModel.action_order" Width="1.5" PointX="5.25" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="marmeladkaDBModel.category" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="marmeladkaDBModel.company" Width="1.5" PointX="0.75" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="marmeladkaDBModel.order" Width="1.5" PointX="3" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="marmeladkaDBModel.product" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="marmeladkaDBModel.user" Width="1.5" PointX="0.75" PointY="8.25" IsExpanded="true" />
+        <AssociationConnector Association="marmeladkaDBModel.fk_action_orders" ManuallyRouted="false" />
+        <AssociationConnector Association="marmeladkaDBModel.fk_action_products" ManuallyRouted="false" />
+        <AssociationConnector Association="marmeladkaDBModel.fk_product_category" ManuallyRouted="false" />
+        <AssociationConnector Association="marmeladkaDBModel.fk_product_company" ManuallyRouted="false" />
+        <AssociationConnector Association="marmeladkaDBModel.fk_orders_user" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

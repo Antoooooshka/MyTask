@@ -1,0 +1,40 @@
+﻿@model IEnumerable<marmeladka.ViewModels.ProductViewModel>
+
+@{
+    ViewBag.Title = "GetAllProduct";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Имя</th>
+            <th>Категория</th>
+            <th>Компания производитель</th>
+            <th>Оптовая цена(100гр)</th>
+            <th>Розничная цена(100гр)</th>
+            <th>Вес на складе(грамм)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Category.Name</td>
+                <td>@item.Company.Name</td>
+                <td>@item.Opt_price</td>
+                <td>@item.Retail_price</td>
+                <td>@item.Product_weight</td>
+                <td><a href="#" class="btn btn-success">Обновить</a></td>
+                <td><a href="@Url.Action("DeleteProduct", "Admin", new {id = item.Id})" class="btn btn-danger">Удалить</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="col-md-1 ">
+    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#myModal">Добавить</button>
+</div>
+
+@Html.Partial("_AddProductPartialView", new marmeladka.ViewModels.ProductViewModel())

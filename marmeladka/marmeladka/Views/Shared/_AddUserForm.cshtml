@@ -1,0 +1,27 @@
+﻿@model marmeladka.ViewModels.UserViewModel
+
+<div class="modal col-md-5 col-md-offset-3" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">Заполните форму</h3>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("","Admin", FormMethod.Post))
+                {
+                    @Html.TextBoxFor(x => x.Name)
+                    @Html.TextBoxFor(x => x.Second_name)
+                    @Html.TextBoxFor(x => x.Adress)
+                    @Html.TextBoxFor(x => x.Email)
+                    @Html.TextBoxFor(x => x.Postcode)                                                 
+                }
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                <button class="btn btn-success">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
