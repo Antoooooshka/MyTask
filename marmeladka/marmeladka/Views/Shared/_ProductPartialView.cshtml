@@ -1,0 +1,25 @@
+﻿@model IEnumerable<marmeladka.ViewModels.ProductViewModel>
+
+<ul class="thumbnails">
+
+    @foreach (var item in Model)
+    {
+        <li class="span3">
+            <div class="thumbnail">
+                <img src="holder.js/300x200" alt="">
+                <div class="caption">
+                    <h4>@item.Name</h4>
+                    @item.Company.Name @item.Category.Name
+                    <p>Цена @item.Retail_price Вес: 100 грамм</p>
+                    <div class="row">
+                        <div class="span1">
+                            <button class="btn btn-primary">Добавить</button>
+                        </div>
+                        <input type="text" class="span2 pull-right productinput"/>
+                    </div>           
+                </div>
+            </div>
+        </li>
+    }
+</ul>
+

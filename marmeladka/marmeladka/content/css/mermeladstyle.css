@@ -1,9 +1,29 @@
-body{
+body {
+    padding-bottom: 40px;
+    padding-top: 60px;
 	background-image: url("./content/img/back.png");
 }
-#bodyContainer{
+#bodyContainer {
+    margin-top: 60px;
 }
-#logo{
+#logo {
     background-image: url("./content/img/logo1.png");
-	margin-left: 50px;
+	margin-left: 40px;
+    height: 60px;
+}
+#navtop {
+    background-color: #EEEEEE;
+    -webkit-box-shadow: 0px 2px 4px #000000;
+    -moz-box-shadow: 0px 2px 4px #000000;
+    box-shadow: 0 4px 4px -2px #000000;
+}
+#basketimg {
+    height: 60px;
+}
+#basketpanel {
+    margin-top: 10px;
+    margin-right: 60px;
+}
+.productinput {
+    height: 30px;
 }

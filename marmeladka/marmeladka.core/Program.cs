@@ -10,6 +10,7 @@ namespace marmeladka.core
     {
         static void Main(string[] args)
         {
+
         }
     }
 }

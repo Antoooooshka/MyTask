@@ -1,12 +1,10 @@
 ﻿@{
-    ViewBag.Title = "marmeladka.by";
+    ViewBag.Title = "Index";
 }
 
-<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />	
-	<title>Responsive Web Mobile - Ecommerce</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 	<!-- Included Bootstrap CSS Files -->
 	<link rel="stylesheet" href="./content/js/bootstrap/css/bootstrap.min.css" />
@@ -17,84 +15,28 @@
 
 	<!-- Css -->	
 	<link rel="stylesheet" href="./content/css/mermeladstyle.css" />
-	<link rel="stylesheet" href="./content/css/style.css"/>
-	
+
 </head>
 <body>
 
+<nav class="navbar navbar-fixed-top" id="navtop">
 	<div class="container">
-        <header>
-			<a class="brand" href="#"><img src="./content/img/logo1.png" id="logo"></a>
-        </header>
+		<div class="navbar-header">
+			<a class="brand" href="#"><img src="./content/img/logo1.PNG" id="logo"></a>
+		</div>
+        <label for="basketpanel"></label>
+		    <div class="pull-right" id="basketpanel">
+               <a href="#"><img src="./content/img/colorbasket.png" id="basketimg">Корзина</a>
+		    </div>
 	</div>	
+</nav>
 
 	<div class="container" id="bodyContainer">
-
 		<div class="row">
-			<div class="span3">				
-				<div class="well">
-					<ul class="nav nav-list">
-						<li class="nav-header">Sidebar</li>
-						<li class="active">
-							<a href="#">Link</a>
-						</li>
-						<li>
-							<a href="#">Link</a>
-						</li>
-						<li>
-							<a href="#">Link</a>
-						</li>
-					</ul>
-				</div>
+			<div class="span3">
+                @{Html.RenderAction("GetCategorys", "Category");}
 
-				<div class="well">
-					<h4>Filters</h4>
-					<form>                                      
-						<label class="checkbox">
-							<input type="checkbox" value="">
-							фильтр по вкусам
-						</label>				
-						<button class="btn btn-primary pull-right" type="submit">Filter</button>
-					</form>
-				</div>
-
-				<div class="well">
-					<h4>Sort</h4>
-					<form>
-						<label class="radio">
-							<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-							Sort 1
-						</label>
-						<label class="radio">
-							<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-							Sort 2
-						</label>
-						<button class="btn btn-primary pull-right" type="submit">Sort</button>
-					</form>
-				</div>
-
-				<div class="well">
-					<form class="form login-form">
-						<h2>Sign in</h2>
-						<div>
-							<label>Username</label>
-							<input id="Username" name="Username" type="text" />
-
-							<label>Password</label>
-							<input id="Password" name="Password" type="password" />
-
-							<label class="checkbox inline">
-								<input type="checkbox" id="RememberMe" value="option1"> Remember me
-							</label>
-
-							<br /><br />
-
-							<button type="submit" class="btn btn-success">Login</button>
-						</div>
-						<br />
-						<a href="#">register</a>&nbsp;&#124;&nbsp;<a href="#">forgot password?</a>
-					</form>
-				</div>
+                @{Html.RenderAction("GetCompany", "Company");}						
 			</div>
 
 			<div class="span9">
@@ -104,107 +46,7 @@
 					<p><a href="#" class="btn btn-primary btn-large">Learn more »</a></p>
 				</div>
 
-				<ul class="thumbnails">
-					<li class="span3">
-						<div class="thumbnail">
-							<img src="holder.js/300x200" alt="">
-							<div class="caption">
-								<h4>Thumbnail label</h4>
-								<p><strike>Euro 150,00</strike>&nbsp;Euro 100,00</p>
-								<a class="btn btn-primary" href="#">View</a>
-								<a class="btn btn-success" href="#">Add to Cart</a>
-							</div>
-						</div>
-					</li>
-					<li class="span3">
-						<div class="thumbnail">
-							<img src="holder.js/300x200" alt="">
-							<div class="caption">
-								<h4>Thumbnail label</h4>
-								<p>Euro 100,00</p>
-								<a class="btn btn-primary" href="#">View</a>
-								<a class="btn btn-success" href="#">Add to Cart</a>
-							</div>
-						</div>
-					</li>
-					<li class="span3">
-						<div class="thumbnail">
-							<img src="holder.js/300x200" alt="">
-							<div class="caption">
-								<h4>Thumbnail label</h4>
-								<p>Euro 100,00</p>
-								<a class="btn btn-primary" href="#">View</a>
-								<a class="btn btn-success" href="#">Add to Cart</a>
-							</div>
-						</div>
-					</li>
-					<li class="span3">
-						<div class="thumbnail">
-							<img src="holder.js/300x200" alt="">
-							<div class="caption">
-								<h4>Thumbnail label</h4>
-								<p>Euro 100,00</p>
-								<a class="btn btn-primary" href="#">View</a>
-								<a class="btn btn-success" href="#">Add to Cart</a>
-							</div>
-						</div>
-					</li>
-					<li class="span3">
-						<div class="thumbnail">
-							<img src="holder.js/300x200" alt="">
-							<div class="caption">
-								<h4>Thumbnail label</h4>
-								<p>Euro 100,00</p>
-								<a class="btn btn-primary" href="#">View</a>
-								<a class="btn btn-success" href="#">Add to Cart</a>
-							</div>
-						</div>
-					</li>
-					<li class="span3">
-						<div class="thumbnail">
-							<img src="holder.js/300x200" alt="">
-							<div class="caption">
-								<h4>Thumbnail label</h4>
-								<p>Euro 100,00</p>
-								<a class="btn btn-primary" href="#">View</a>
-								<a class="btn btn-success" href="#">Add to Cart</a>
-							</div>
-						</div>
-					</li>
-					<li class="span3">
-						<div class="thumbnail">
-							<img src="holder.js/300x200" alt="">
-							<div class="caption">
-								<h4>Thumbnail label</h4>
-								<p>Euro 100,00</p>
-								<a class="btn btn-primary" href="#">View</a>
-								<a class="btn btn-success" href="#">Add to Cart</a>
-							</div>
-						</div>
-					</li>
-					<li class="span3">
-						<div class="thumbnail">
-							<img src="holder.js/300x200" alt="">
-							<div class="caption">
-								<h4>Thumbnail label</h4>
-								<p>Euro 100,00</p>
-								<a class="btn btn-primary" href="#">View</a>
-								<a class="btn btn-success" href="#">Add to Cart</a>
-							</div>
-						</div>
-					</li>
-					<li class="span3">
-						<div class="thumbnail">
-							<img src="holder.js/300x200" alt="">
-							<div class="caption">
-								<h4>Thumbnail label</h4>
-								<p>Euro 100,00</p>
-								<a class="btn btn-primary" href="#">View</a>
-								<a class="btn btn-success" href="#">Add to Cart</a>
-							</div>
-						</div>
-					</li>
-				</ul>
+				@{Html.RenderAction("GetProducts", "Product");}
 
 				<div class="pagination">
 					<ul>
@@ -217,11 +59,9 @@
 						<li><a href="#">Next</a></li>
 					</ul>
 				</div>
-
 			</div>
 		</div>
 	</div>
-	
 	<hr />
 
 	<footer id="footer" class="vspace20">
@@ -276,4 +116,3 @@
 	<script src="./content/js/script.js"></script>
 </body>
 </html>
-

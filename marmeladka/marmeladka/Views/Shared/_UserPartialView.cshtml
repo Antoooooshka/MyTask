@@ -1,0 +1,30 @@
+﻿@model IEnumerable<marmeladka.ViewModels.UserViewModel>
+
+@{
+    ViewBag.Title = "User";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>Email</th>
+            <th>Почтовый пиндекс</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Second_name</td>
+                <td>@item.Email</td>
+                <td>@item.Postcode</td>
+                <td><a href="#" class="btn btn-success">Обновить</a></td>
+                <td><a href="@Url.Action("DeleteUser", "Admin", new {id = item.Id})" class="btn btn-danger">Удалить</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

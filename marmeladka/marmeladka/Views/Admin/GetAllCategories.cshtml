@@ -1,0 +1,30 @@
+﻿@model IEnumerable<marmeladka.ViewModels.CategoryViewModel>
+
+@{
+    ViewBag.Title = "GetAllCategories";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<table class="table table-hover table-condensed">
+    <thead>
+        <tr>
+            <th>Имя</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td><a href="@Html.Partial("UpdateCategory", new { item = item.Id })" class="btn btn-success">Обновить</a></td>
+                <td><a href="@Url.Action("DeleteCategory", "Admin", new { id = item.Id })" class="btn btn-danger">Удалить</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="col-md-1 ">
+    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#myModal">Добавить</button>
+</div>
+
+@Html.Partial("_AddCategoryPartialView", new marmeladka.ViewModels.CategoryViewModel());
