@@ -1,0 +1,22 @@
+﻿@model marmeladka.ViewModels.CategoryViewModel
+<div class="modal col-md-5 col-md-offset-3" id="updateModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">Заполните форму</h3>
+            </div>
+            @using (Html.BeginForm("UpdateCategory", "Admin", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    @Html.TextBoxFor(x => x.Name, new { placeholder = Model.Name, @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.Name)
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                    <button type="submit" class="btn btn-success">Save changes</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
