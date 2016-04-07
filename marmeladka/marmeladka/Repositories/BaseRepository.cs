@@ -30,9 +30,15 @@ namespace marmeladka.Repositories
                 return dbSet.Remove(entity);
             return null;
         }
+
         public virtual void Add(T t)
         {
             dbSet.Add(t);
-        }      
+        }
+        public virtual void Update(T t)
+        {
+            marmDb.Entry(t).State = EntityState.Modified;
+            dbSet.Add(t);
+        }
     }
 }

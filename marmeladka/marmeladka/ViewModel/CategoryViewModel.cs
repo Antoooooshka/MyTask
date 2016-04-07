@@ -9,7 +9,7 @@ namespace marmeladka.ViewModels
 {
     public class CategoryViewModel
     {
-        public System.Guid Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required(ErrorMessage = "Введите Имя")]
         public string Name { get; set; }

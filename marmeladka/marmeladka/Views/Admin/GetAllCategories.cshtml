@@ -12,19 +12,26 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @using (Ajax.BeginForm("UpdateCategory","Admin", new AjaxOptions { UpdateTargetId = "content", HttpMethod = "Get"}))
         {
-            <tr>
+            foreach (var item in Model)
+            {          
+            <tr data-model-id="@item.Id">
                 <td>@item.Name</td>
-                <td><a href="@Html.Partial("UpdateCategory", new { item = item.Id })" class="btn btn-success">Обновить</a></td>
+                <td><a href="@Url.Action("UpdateCategory", "Admin", new { id = item.Id })" class="btn btn-success">Обновить</a></td>
                 <td><a href="@Url.Action("DeleteCategory", "Admin", new { id = item.Id })" class="btn btn-danger">Удалить</a></td>
             </tr>
+            }
         }
+
     </tbody>
 </table>
 
 <div class="col-md-1 ">
     <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#myModal">Добавить</button>
+</div>
+
+<div id="content">
 </div>
 
 @Html.Partial("_AddCategoryPartialView", new marmeladka.ViewModels.CategoryViewModel());
