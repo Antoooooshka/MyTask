@@ -123,7 +123,6 @@ namespace marmeladka.Controllers
         [HttpGet]
         public ActionResult UpdateCategory(Guid id)
         {
-            if (id == null) { return HttpNotFound(); }
             CategoryRepository catRep = new CategoryRepository();
             var viewModel = Mapper.Map(catRep.GetCategoryById(id));
             return PartialView("_UpdateCategoryPartialView", viewModel);
@@ -139,7 +138,7 @@ namespace marmeladka.Controllers
                 catRep.Update(category);
                 catRep.Savechanges();
             }
-            return RedirectToAction("GetAllCategory","Admin");
+            return RedirectToAction("GetAllCategories", "Admin");
         }
     }
 }
