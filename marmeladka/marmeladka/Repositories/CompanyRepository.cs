@@ -12,10 +12,13 @@ namespace marmeladka.Repositories
         {
 
         }
-
-        public IEnumerable<company> GetCompany()
+        public IEnumerable<company> GetAllCompany()
         {
             return dbSet.ToList();
+        }
+        public company GetCompanyById(Guid id)
+        {
+            return dbSet.Find(id);
         }
     }
 }

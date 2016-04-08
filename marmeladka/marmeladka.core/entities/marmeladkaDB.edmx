@@ -19,6 +19,7 @@
           </Key>
           <Property Name="id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="isDelete" Type="bit" />
         </EntityType>
         <EntityType Name="company">
           <Key>
@@ -169,6 +170,7 @@
           <Property Name="id" Type="Guid" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="product" Relationship="Self.fk_product_category" FromRole="category" ToRole="product" />
+          <Property Name="isDelete" Type="Boolean" />
         </EntityType>
         <EntityType Name="company">
           <Key>
@@ -323,6 +325,7 @@
           <EntitySetMapping Name="category">
             <EntityTypeMapping TypeName="marmeladkaDBModel.category">
               <MappingFragment StoreEntitySet="category">
+                <ScalarProperty Name="isDelete" ColumnName="isDelete" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>

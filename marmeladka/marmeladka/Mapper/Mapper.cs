@@ -42,7 +42,8 @@ namespace marmeladka.Mappers
             var viewModel = new CategoryViewModel
             {
                 Id = category.id,
-                Name = category.name
+                Name = category.name,
+                IsDelete = category.isDelete
             };
             return viewModel;
         }
@@ -52,7 +53,8 @@ namespace marmeladka.Mappers
             var category = new category
             {
                 id = Guid.NewGuid(),
-                name = categoryView.Name
+                name = categoryView.Name,
+                isDelete = false
             };
             return category;
         }

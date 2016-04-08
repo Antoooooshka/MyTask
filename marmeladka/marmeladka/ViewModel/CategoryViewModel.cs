@@ -13,5 +13,6 @@ namespace marmeladka.ViewModels
 
         [Required(ErrorMessage = "Введите Имя")]
         public string Name { get; set; }
+        public Nullable<bool> IsDelete { get; set; }
     }
 }

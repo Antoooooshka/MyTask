@@ -13,7 +13,7 @@ namespace marmeladka.Controllers
         public PartialViewResult GetCategorys()
         {
             CategoryRepository catRep = new CategoryRepository();
-            var category = catRep.GetCategory().Select(z => Mapper.Map(z));
+            var category = catRep.GetAllCategory().Where(x => x.isDelete == false).Select(x => Mapper.Map(x));
             return PartialView("_CategoryPartialView", category);
         }
     }

@@ -13,7 +13,7 @@ namespace marmeladka.Controllers
         public PartialViewResult GetCompany()
         {
             CompanyRepository companyRep = new CompanyRepository();
-            var company = companyRep.GetCompany().Where(x => x.isDelete == false).Select(x => Mapper.Map(x));
+            var company = companyRep.GetAllCompany().Where(x => x.isDelete == false).Select(x => Mapper.Map(x));
             return PartialView("_CompanyPartialView", company);
         }
     }

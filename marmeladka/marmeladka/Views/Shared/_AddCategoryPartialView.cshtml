@@ -8,7 +8,7 @@
                 <h3 id="myModalLabel">Заполните форму</h3>
             </div>
 
-            @using (Html.BeginForm("AddCategory", "Admin", FormMethod.Post))
+            @using (Html.BeginForm("AddOrUpdateCategory", "Admin", FormMethod.Post))
             {
                 <div class="modal-body">
                     @Html.TextBoxFor(x => x.Name, new { placeholder = "Введите имя категории", @class = "form-control" })

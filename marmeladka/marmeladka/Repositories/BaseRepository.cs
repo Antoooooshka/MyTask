@@ -38,7 +38,6 @@ namespace marmeladka.Repositories
         public virtual void Update(T t)
         {
             marmDb.Entry(t).State = EntityState.Modified;
-            dbSet.Add(t);
         }
     }
 }

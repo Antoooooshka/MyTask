@@ -27,7 +27,7 @@ namespace marmeladka.Controllers
         {
             UserRepository userRep = new UserRepository();
             var user = userRep.Delete(id);
-            if (user != null)
+            if (user != null)             
                 userRep.Savechanges();
             return RedirectToAction("GetAllUsers", "Admin");
         }
@@ -35,38 +35,48 @@ namespace marmeladka.Controllers
         public ActionResult GetAllCompany()
         {
             CompanyRepository compRepository = new CompanyRepository();
-            var company = compRepository.GetCompany().Where(x => x.isDelete == false).Select(x => Mapper.Map(x));
+            var company = compRepository.GetAllCompany().Where(x => x.isDelete == false).Select(x => Mapper.Map(x));
             return View(company);
         }
         public ActionResult DeleteCompany(Guid id)
         {
             CompanyRepository compRes = new CompanyRepository();
-            var company = compRes.Delete(id);
-            if (company != null)
+            var company = compRes.GetCompanyById(id);
+            if (company != null) 
+            {
+                compRes.Update(company);
+                company.isDelete = true;
                 compRes.Savechanges();
+            }
+
+                
             return RedirectToAction("GetAllCompany", "Admin");
         }
 
         public ActionResult GetAllCategories()
         {
             CategoryRepository catRep = new CategoryRepository();
-            var category = catRep.GetCategory().Select(x => Mapper.Map(x));
+            var category = catRep.GetAllCategory().Where(x => x.isDelete == false).Select(x => Mapper.Map(x));
             return View(category);
         }
         public ActionResult DeleteCategory(Guid id)
         {
             CategoryRepository catRep = new CategoryRepository();
-            var category = catRep.Delete(id);
+            var category = catRep.GetCategoryById(id);
             if (category != null)
+            {
+                catRep.Update(category);
+                category.isDelete = true;
                 catRep.Savechanges();
+            }
             return RedirectToAction("GetAllCategories", "Admin");
         }
 
         public ActionResult GetAllProduct()
         {
             ProductRepository prodRep = new ProductRepository();
-            ViewBag.Categories = new CategoryRepository().GetCategory().Select(item => new SelectListItem { Text = item.name, Value = item.id.ToString() });
-            ViewBag.Companies = new CompanyRepository().GetCompany().Select(item => new SelectListItem { Text = item.name, Value = item.id.ToString() });
+            ViewBag.Categories = new CategoryRepository().GetAllCategory().Where(x => x.isDelete == false).Select(item => new SelectListItem { Text = item.name, Value = item.id.ToString() });
+            ViewBag.Companies = new CompanyRepository().GetAllCompany().Where(x => x.isDelete == false).Select(item => new SelectListItem { Text = item.name, Value = item.id.ToString() });
             var product = prodRep.GetProducts().Select(x => Mapper.Map(x));
             return View(product);
         }
@@ -140,6 +150,29 @@ namespace marmeladka.Controllers
                 catRep.Savechanges();
             }
             return RedirectToAction("GetAllCategory","Admin");
+        }
+
+        [HttpGet]
+        public ActionResult AddOrUpdateCategory(Guid id)
+        {
+            // сюда придет ajax запрос принесет id
+            CategoryRepository catRep = new CategoryRepository();
+            if (id != null)
+            {
+               var viewModel = Mapper.Map(catRep.GetCategoryById(id));
+               return PartialView("_AddCategoryPartialView", viewModel);
+            }
+            else
+            {
+
+            }
+
+            return HttpNotFound();
+        }
+        [HttpPost]
+        public ActionResult AddOrUpdateCategory(CategoryViewModel viewModel)
+        {
+            return RedirectToAction("GetAllCategories");
         }
     }
 }
