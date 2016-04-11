@@ -52,9 +52,9 @@ namespace marmeladka.Mappers
         {
             var category = new category
             {
-                id = Guid.NewGuid(),
+                id = categoryView.Id,
                 name = categoryView.Name,
-                isDelete = false
+                isDelete = categoryView.IsDelete
             };
             return category;
         }

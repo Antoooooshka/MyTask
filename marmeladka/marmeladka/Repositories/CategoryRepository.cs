@@ -18,7 +18,7 @@ namespace marmeladka.Repositories
            return dbSet.ToList();
         }
 
-        public category GetCategoryById(Guid id)
+        public category GetCategoryById(Guid? id)
         {
            return dbSet.Find(id);
         }

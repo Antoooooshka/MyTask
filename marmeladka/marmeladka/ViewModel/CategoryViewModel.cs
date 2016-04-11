@@ -10,7 +10,6 @@ namespace marmeladka.ViewModels
     public class CategoryViewModel
     {
         public Guid Id { get; set; }
-
         [Required(ErrorMessage = "Введите Имя")]
         public string Name { get; set; }
         public Nullable<bool> IsDelete { get; set; }

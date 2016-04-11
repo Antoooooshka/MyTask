@@ -27,7 +27,7 @@ namespace marmeladka.Controllers
         {
             UserRepository userRep = new UserRepository();
             var user = userRep.Delete(id);
-            if (user != null)             
+            if (user != null)
                 userRep.Savechanges();
             return RedirectToAction("GetAllUsers", "Admin");
         }
@@ -42,14 +42,14 @@ namespace marmeladka.Controllers
         {
             CompanyRepository compRes = new CompanyRepository();
             var company = compRes.GetCompanyById(id);
-            if (company != null) 
+            if (company != null)
             {
                 compRes.Update(company);
                 company.isDelete = true;
                 compRes.Savechanges();
             }
 
-                
+
             return RedirectToAction("GetAllCompany", "Admin");
         }
 
@@ -103,7 +103,7 @@ namespace marmeladka.Controllers
 
             return RedirectToAction("GetAllCategories", "Admin");
         }
-        
+
         [HttpPost]
         public ActionResult AddCompany(CompanyViewModel viewModel)
         {
@@ -133,7 +133,6 @@ namespace marmeladka.Controllers
         [HttpGet]
         public ActionResult UpdateCategory(Guid id)
         {
-            if (id == null) { return HttpNotFound(); }
             CategoryRepository catRep = new CategoryRepository();
             var viewModel = Mapper.Map(catRep.GetCategoryById(id));
             return PartialView("_UpdateCategoryPartialView", viewModel);
@@ -149,29 +148,41 @@ namespace marmeladka.Controllers
                 catRep.Update(category);
                 catRep.Savechanges();
             }
-            return RedirectToAction("GetAllCategory","Admin");
+            return RedirectToAction("GetAllCategory", "Admin");
         }
 
         [HttpGet]
-        public ActionResult AddOrUpdateCategory(Guid id)
+        public ActionResult AddOrUpdateCategory(Guid? id)
         {
-            // сюда придет ajax запрос принесет id
             CategoryRepository catRep = new CategoryRepository();
             if (id != null)
             {
-               var viewModel = Mapper.Map(catRep.GetCategoryById(id));
-               return PartialView("_AddCategoryPartialView", viewModel);
+                var viewModel = Mapper.Map(catRep.GetCategoryById(id));
+                return PartialView("_AddCategoryPartialView", viewModel);
             }
             else
             {
-
+                return PartialView("_AddCategoryPartialView", new CategoryViewModel { Id = Guid.Empty, IsDelete = false });
             }
 
-            return HttpNotFound();
         }
         [HttpPost]
         public ActionResult AddOrUpdateCategory(CategoryViewModel viewModel)
         {
+            CategoryRepository catRep = new CategoryRepository();
+            if (viewModel.Id == Guid.Empty)
+            {
+                var category = Mapper.Map(viewModel);
+                category.id = Guid.NewGuid();
+                catRep.Add(category);
+                catRep.Savechanges();
+            }
+            else
+            {
+                var category = Mapper.Map(viewModel);
+                catRep.Update(category);
+                catRep.Savechanges();
+            }
             return RedirectToAction("GetAllCategories");
         }
     }
