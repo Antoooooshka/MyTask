@@ -17,7 +17,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach(var item in Model)
+        @foreach (var item in Model)
         {
             <tr>
                 <td>@item.Name</td>
@@ -26,15 +26,33 @@
                 <td>@item.Opt_price</td>
                 <td>@item.Retail_price</td>
                 <td>@item.Product_weight</td>
-                <td><a href="#" class="btn btn-success">Обновить</a></td>
-                <td><a href="@Url.Action("DeleteProduct", "Admin", new {id = item.Id})" class="btn btn-danger">Удалить</a></td>
+                <td>
+                    <button type="button" data-model-id="@item.Id" onclick="AddOrUpdateModel(this)" class="btn btn-success">Обновить</button></td>
+                <td><a href="@Url.Action("DeleteProduct", "Admin", new { id = item.Id })" class="btn btn-danger">Удалить</a></td>
             </tr>
         }
     </tbody>
 </table>
 
 <div class="col-md-1 ">
-    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#myModal">Добавить</button>
+    <button class="btn btn-primary" type="button" onclick="AddOrUpdateModel(this)">Добавить</button>
 </div>
 
-@Html.Partial("_AddProductPartialView", new marmeladka.ViewModels.ProductViewModel())
+<div id="modDialog" class="modal fade">
+    <div id="dialogContent" class="modal-dialog"></div>
+</div>
+
+<script type="text/ecmascript">
+    function AddOrUpdateModel(event) {
+        $.ajax({
+            cashe: false,
+            async: true,
+            type: "GET",
+            url: "/Admin/GetAddOrUpdateProductForm/?id=" + event.getAttribute("data-model-id"),
+            success: function (result) {
+                $("#dialogContent").html(result);
+                $('#modDialog').modal('show');
+            }
+        });
+    };
+</script>

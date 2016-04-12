@@ -12,10 +12,13 @@ namespace marmeladka.Repositories
         {
 
         }
-
         public IEnumerable<product> GetProducts() 
         {
             return dbSet.ToList();
+        }
+        public product GetProductById(Guid? id)
+        {
+            return dbSet.Find(id);
         }
 
     }

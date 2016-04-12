@@ -1,5 +1,6 @@
 ﻿using marmeladka.Mappers;
 using marmeladka.Repositories;
+using marmeladka.Validator;
 using marmeladka.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -75,8 +76,6 @@ namespace marmeladka.Controllers
         public ActionResult GetAllProduct()
         {
             ProductRepository prodRep = new ProductRepository();
-            ViewBag.Categories = new CategoryRepository().GetAllCategory().Where(x => x.isDelete == false).Select(item => new SelectListItem { Text = item.name, Value = item.id.ToString() });
-            ViewBag.Companies = new CompanyRepository().GetAllCompany().Where(x => x.isDelete == false).Select(item => new SelectListItem { Text = item.name, Value = item.id.ToString() });
             var product = prodRep.GetProducts().Select(x => Mapper.Map(x));
             return View(product);
         }
@@ -87,34 +86,6 @@ namespace marmeladka.Controllers
             if (product != null)
                 productRep.Savechanges();
             return RedirectToAction("GetAllProduct", "Admin");
-        }
-
-        [HttpPost]
-        public ActionResult AddCategory(CategoryViewModel viewModel)
-        {
-            CategoryRepository catRep = new CategoryRepository();
-
-            var category = Mapper.Map(viewModel);
-            if (ModelState.IsValid)
-            {
-                catRep.Add(category);
-                catRep.Savechanges();
-            }
-
-            return RedirectToAction("GetAllCategories", "Admin");
-        }
-
-        [HttpPost]
-        public ActionResult AddCompany(CompanyViewModel viewModel)
-        {
-            CompanyRepository compRes = new CompanyRepository();
-            var company = Mapper.Map(viewModel);
-            if (ModelState.IsValid)
-            {
-                compRes.Add(company);
-                compRes.Savechanges();
-            }
-            return RedirectToAction("GetAllCompany", "Admin");
         }
 
         [HttpPost]
@@ -131,28 +102,7 @@ namespace marmeladka.Controllers
         }
 
         [HttpGet]
-        public ActionResult UpdateCategory(Guid id)
-        {
-            CategoryRepository catRep = new CategoryRepository();
-            var viewModel = Mapper.Map(catRep.GetCategoryById(id));
-            return PartialView("_UpdateCategoryPartialView", viewModel);
-        }
-
-        [HttpPost]
-        public ActionResult UpdateCategory(CategoryViewModel viewModel)
-        {
-            CategoryRepository catRep = new CategoryRepository();
-            var category = Mapper.Map(viewModel);
-            if (ModelState.IsValid)
-            {
-                catRep.Update(category);
-                catRep.Savechanges();
-            }
-            return RedirectToAction("GetAllCategory", "Admin");
-        }
-
-        [HttpGet]
-        public ActionResult AddOrUpdateCategory(Guid? id)
+        public ActionResult GetAddOrUpdateCategoryForm(Guid? id)
         {
             CategoryRepository catRep = new CategoryRepository();
             if (id != null)
@@ -169,21 +119,100 @@ namespace marmeladka.Controllers
         [HttpPost]
         public ActionResult AddOrUpdateCategory(CategoryViewModel viewModel)
         {
-            CategoryRepository catRep = new CategoryRepository();
-            if (viewModel.Id == Guid.Empty)
+            if (Validation.Validate(viewModel))
             {
-                var category = Mapper.Map(viewModel);
-                category.id = Guid.NewGuid();
-                catRep.Add(category);
-                catRep.Savechanges();
-            }
-            else
-            {
-                var category = Mapper.Map(viewModel);
-                catRep.Update(category);
-                catRep.Savechanges();
+                CategoryRepository catRep = new CategoryRepository();
+                if (viewModel.Id == Guid.Empty)
+                {
+                    var category = Mapper.Map(viewModel);
+                    category.id = Guid.NewGuid();
+                    catRep.Add(category);
+                    catRep.Savechanges();
+                }
+                else
+                {
+                    var category = Mapper.Map(viewModel);
+                    catRep.Update(category);
+                    catRep.Savechanges();
+                }
             }
             return RedirectToAction("GetAllCategories");
+        }
+
+        [HttpGet]
+        public ActionResult GetAddOrUpdateComanyForm(Guid? id)
+        {
+            CompanyRepository compRes = new CompanyRepository();
+            if (id != null)
+            {
+                var viewModel = Mapper.Map(compRes.GetCompanyById(id));
+                return PartialView("_AddCompanyPartialView", viewModel);
+            }
+            else
+                return PartialView("_AddCompanyPartialView", new CompanyViewModel { Id = Guid.Empty, IsDelete = false });
+
+        }
+
+        [HttpPost]
+        public ActionResult AddOrUpdateComany(CompanyViewModel viewModel)
+        {
+            if (Validation.Validate(viewModel))
+            {
+                CompanyRepository compRes = new CompanyRepository();
+                if (viewModel.Id == Guid.Empty)
+                {
+                    var company = Mapper.Map(viewModel);
+                    company.id = Guid.NewGuid();
+                    compRes.Add(company);
+                    compRes.Savechanges();
+                }
+                else
+                {
+                    var company = Mapper.Map(viewModel);
+                    compRes.Update(company);
+                    compRes.Savechanges();
+                }
+            }
+            return RedirectToAction("GetAllCompany");
+        }
+
+        [HttpGet]
+        public ActionResult GetAddOrUpdateProductForm(Guid? id)
+        {
+            ViewBag.Categories = new CategoryRepository().GetAllCategory().Where(x => x.isDelete == false).Select(item => new SelectListItem { Text = item.name, Value = item.id.ToString() });
+            ViewBag.Companies = new CompanyRepository().GetAllCompany().Where(x => x.isDelete == false).Select(item => new SelectListItem { Text = item.name, Value = item.id.ToString() });
+
+            ProductRepository productRes = new ProductRepository();
+            if (id != null)
+            {
+                var viewModels = Mapper.Map(productRes.GetProductById(id));
+                return PartialView("_AddProductPartialView", viewModels);
+            }
+            else
+                return PartialView("_AddProductPartialView", new ProductViewModel { Id = Guid.Empty });
+        }
+
+        [HttpPost]
+        public ActionResult AddOrUpdateProduct(ProductViewModel viewModel)
+        {
+            ProductRepository prodRep = new ProductRepository();
+            if (Validation.Validate(viewModel))
+            {
+                if (viewModel.Id == Guid.Empty)
+                {
+                    var product = Mapper.Map(viewModel);
+                    product.id = Guid.NewGuid();
+                    prodRep.Add(product);
+                    prodRep.Savechanges();
+                }
+                else 
+                {
+                    var product = Mapper.Map(viewModel);
+                    prodRep.Update(product);
+                    prodRep.Savechanges();
+                }               
+            }
+            return RedirectToAction("GetAllProduct");
         }
     }
 }

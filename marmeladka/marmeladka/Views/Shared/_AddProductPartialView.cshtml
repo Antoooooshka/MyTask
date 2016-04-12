@@ -1,39 +1,36 @@
 ﻿@model marmeladka.ViewModels.ProductViewModel
-
-<div class="modal col-md-5 col-md-offset-3" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h3 id="myModalLabel">Заполните форму</h3>
-            </div>
-            @using (Html.BeginForm("AddProduct", "Admin", FormMethod.Post))
-            {
-                <div class="modal-body">
-                    @Html.TextBoxFor(x => x.Name, new { placeholder = "Введите имя продукта", @class = "form-control" })
-                    @Html.ValidationMessageFor(x => x.Name)
-                    <br />
-                    @Html.DropDownListFor(x => x.CategoryId, (IEnumerable<SelectListItem>)ViewBag.Categories, new { placeholder = "Выберите имя", @class = "form-control" })
-                    @Html.ValidationMessageFor(x => x.Category)
-                    <br />
-                    @Html.DropDownListFor(x => x.CompanyId, (IEnumerable<SelectListItem>)ViewBag.Companies, new { placeholder = "Выберите имя", @class = "form-control" })
-                    @Html.ValidationMessageFor(x => x.Company)
-                    <br />
-                    @Html.TextBoxFor(x => x.Opt_price, new { placeholder = "Введите цену закупки", @class = "form-control" })
-                    @Html.ValidationMessageFor(x => x.Opt_price)
-                    <br />
-                    @Html.TextBoxFor(x => x.Retail_price, new { placeholder = "Введите цену реализации", @class = "form-control" })
-                    @Html.ValidationMessageFor(x => x.Retail_price)
-                    <br />
-                    @Html.TextBoxFor(x => x.Product_weight, new { placeholder = "Имеющийся вес", @class = "form-control" })
-                    @Html.ValidationMessageFor(x => x.Product_weight)
-                </div>
-                <div class="modal-footer">
-                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                    <button type="submit" class="btn btn-success">Save changes</button>
-                </div>
-            }
-        </div>
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Заполните форму</h3>
     </div>
+    @using (Html.BeginForm("AddOrUpdateProduct", "Admin", FormMethod.Post, new { @class = "form-horizontal"}))
+    {
+        <div class="modal-body">
+            @Html.HiddenFor(x => x.Id)
+
+            @Html.TextBoxFor(x => x.Name, new { placeholder = "Введите имя продукта", @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Name)
+            <br />
+            @Html.DropDownListFor(x => x.CategoryId, (IEnumerable<SelectListItem>)ViewBag.Categories, new { placeholder = "Выберите имя", @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Category)
+            <br />
+            @Html.DropDownListFor(x => x.CompanyId, (IEnumerable<SelectListItem>)ViewBag.Companies, new { placeholder = "Выберите имя", @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Company)
+            <br />
+            @Html.TextBoxFor(x => x.Opt_price, new { placeholder = "Введите цену закупки", @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Opt_price)
+            <br />
+            @Html.TextBoxFor(x => x.Retail_price, new { placeholder = "Введите цену реализации", @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Retail_price)
+            <br />
+            @Html.TextBoxFor(x => x.Product_weight, new { placeholder = "Имеющийся вес", @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Product_weight)
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button type="submit" class="btn btn-success">Save changes</button>
+        </div>
+    }
 </div>
 

@@ -64,7 +64,7 @@ namespace marmeladka.Mappers
             {
                 Id = company.id,
                 Name = company.name,
-                IsDelete = company.isDelete ?? false
+                IsDelete = company.isDelete
             };
             return companyView;
         }
@@ -72,9 +72,9 @@ namespace marmeladka.Mappers
         {
             var company = new company
             {
-                id = Guid.NewGuid(),
+                id = companuView.Id,
                 name = companuView.Name,
-                isDelete = false
+                isDelete = companuView.IsDelete
             };
             return company;
         }
@@ -98,7 +98,7 @@ namespace marmeladka.Mappers
         {
             var product = new product
             {
-                id = Guid.NewGuid(),
+                id = productView.Id,
                 name = productView.Name,
                 opt_price = productView.Opt_price ?? 0,
                 retail_price = productView.Retail_price ?? 0,

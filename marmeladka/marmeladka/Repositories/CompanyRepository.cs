@@ -16,7 +16,7 @@ namespace marmeladka.Repositories
         {
             return dbSet.ToList();
         }
-        public company GetCompanyById(Guid id)
+        public company GetCompanyById(Guid? id)
         {
             return dbSet.Find(id);
         }

@@ -4,18 +4,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace marmeladka.ViewModels
 {
     public class ProductViewModel
     {
-        public System.Guid Id { get; set; }
+        public Guid Id { get; set; }
+        [Required(ErrorMessage="Обязательное поле")]
         public string Name { get; set; }
+        [DataType(DataType.Currency)]
         public decimal? Opt_price { get; set; }
+        [DataType(DataType.Currency)]
         public decimal? Retail_price { get; set; }
-        public System.Guid CategoryId { get; set; }
+        [Required(ErrorMessage = "Обязательное поле")]
+        public Guid CategoryId { get; set; }
         public int? Product_weight { get; set; }
-        public System.Guid CompanyId { get; set; }
+        [Required(ErrorMessage = "Обязательное поле")]
+        public Guid CompanyId { get; set; }
         public CompanyViewModel Company { get; set; }
         public CategoryViewModel Category { get; set; }
     }

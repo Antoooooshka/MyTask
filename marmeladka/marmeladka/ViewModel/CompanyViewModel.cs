@@ -13,6 +13,6 @@ namespace marmeladka.ViewModels
         public System.Guid Id { get; set; }
         [Required(ErrorMessage = "Имя не указано")]
         public string Name { get; set; }
-        public Boolean IsDelete { get; set; }
+        public Nullable<bool> IsDelete { get; set; }
     }
 }
