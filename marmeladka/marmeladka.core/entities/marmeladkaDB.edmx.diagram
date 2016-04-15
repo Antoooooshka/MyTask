@@ -16,6 +16,7 @@
         <AssociationConnector Association="marmeladkaDBModel.fk_product_category" ManuallyRouted="false" />
         <AssociationConnector Association="marmeladkaDBModel.fk_product_company" ManuallyRouted="false" />
         <AssociationConnector Association="marmeladkaDBModel.fk_orders_user" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="marmeladkaDBModel.Admin" Width="1.5" PointX="7" PointY="3.625" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

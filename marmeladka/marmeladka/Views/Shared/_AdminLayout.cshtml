@@ -29,15 +29,15 @@
                     <li><a href="@Url.Action("GetAllCompany","Admin")">Компания производитель</a></li>
                     <li><a href="@Url.Action("GetAllProduct","Admin")">Продукт</a></li>
                     <li><a href="@Url.Action("GetAllUsers","Admin")">Пользователи</a></li>
+                    <li><a href="@Url.Action("GetAllAdmin","Admin")">Администраторы</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+                    <li><a href="@Url.Action("LogOut","Admin")"><span class="glyphicon glyphicon-log-in"></span>@User.Identity.Name</a></li>
                 </ul>
             </div>
         </div>
     </nav>
     @RenderBody()
-
 </body>
 </html>
 

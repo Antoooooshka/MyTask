@@ -55,6 +55,9 @@
     <Compile Include="entities\action_order.cs">
       <DependentUpon>marmeladkaDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="entities\Admin.cs">
+      <DependentUpon>marmeladkaDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="entities\category.cs">
       <DependentUpon>marmeladkaDB.tt</DependentUpon>
     </Compile>

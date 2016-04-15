@@ -1,4 +1,5 @@
 ﻿using marmeladka.Mappers;
+using marmeladka.AdminServise;
 using marmeladka.Repositories;
 using marmeladka.Validator;
 using marmeladka.ViewModels;
@@ -7,23 +8,98 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace marmeladka.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
+
+        [AllowAnonymous]
+        public ActionResult LoginForm()
+        {
+            return View();
+        }
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult Login(string name, string password) // переделать с верификацией пароля и модели
+        {
+            AdminRepository admRep = new AdminRepository();
+            var admin = admRep.ChekUniqueAdminName(name);
+            if (admin != null)
+            {
+
+                FormsAuthentication.SetAuthCookie(name, false);
+            }
+            return RedirectToAction("Administration");
+        }
+
+        public ActionResult LogOut()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Home");
+        }
+
+
+        public ActionResult GetAllAdmin()
+        {
+            AdminRepository admRep = new AdminRepository();
+            var viewAdmin = admRep.GetAllAdmin().Select(x => Mapper.Map(x));
+            return View(viewAdmin);
+        }
+        public ActionResult AddAdminForm()
+        {
+            return PartialView("_AddAdminPartialView");
+        }
+
+        [HttpPost]
+        public ActionResult AddAdmin(AdminViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                AdminRepository admRep = new AdminRepository();
+                if (admRep.ChekUniqueAdminName(viewModel.Name) == null)
+                {
+                    var admin = Mapper.Map(viewModel);
+                    admin.Id = Guid.NewGuid();
+                    admin.Salt = Servise.CreateSalt();
+                    admin.Password = Servise.GetHash(viewModel.Password, admin.Salt);
+                    admRep.Add(admin);
+                    admRep.Savechanges();
+                }
+                else 
+                {
+                    // отправить, что мол такое имя уже есть
+                }
+
+            }
+            else 
+            {
+                // отправить ошибки модели
+            }
+            return RedirectToAction("GetAllAdmin");
+        }
+        public ActionResult DeleteAdmin(Guid id)
+        {
+            AdminRepository admRep = new AdminRepository();
+            var admin = admRep.Delete(id);
+            if (admin != null)
+                admRep.Savechanges();
+            return RedirectToAction("GetAllAdmin");
+
+        }
+
         public ActionResult Administration()
         {
             return View();
         }
-
         public ActionResult GetAllUsers()
         {
             UserRepository userRepository = new UserRepository();
             var user = userRepository.GetUsers().Select(x => Mapper.Map(x));
             return PartialView("_UserPartialView", user);
         }
-
         public ActionResult DeleteUser(Guid id)
         {
             UserRepository userRep = new UserRepository();
@@ -32,7 +108,6 @@ namespace marmeladka.Controllers
                 userRep.Savechanges();
             return RedirectToAction("GetAllUsers", "Admin");
         }
-
         public ActionResult GetAllCompany()
         {
             CompanyRepository compRepository = new CompanyRepository();
@@ -49,11 +124,8 @@ namespace marmeladka.Controllers
                 company.isDelete = true;
                 compRes.Savechanges();
             }
-
-
             return RedirectToAction("GetAllCompany", "Admin");
         }
-
         public ActionResult GetAllCategories()
         {
             CategoryRepository catRep = new CategoryRepository();
@@ -72,7 +144,6 @@ namespace marmeladka.Controllers
             }
             return RedirectToAction("GetAllCategories", "Admin");
         }
-
         public ActionResult GetAllProduct()
         {
             ProductRepository prodRep = new ProductRepository();
@@ -85,19 +156,6 @@ namespace marmeladka.Controllers
             var product = productRep.Delete(id);
             if (product != null)
                 productRep.Savechanges();
-            return RedirectToAction("GetAllProduct", "Admin");
-        }
-
-        [HttpPost]
-        public ActionResult AddProduct(ProductViewModel viewModel)
-        {
-            ProductRepository productRep = new ProductRepository();
-            var product = Mapper.Map(viewModel);
-            if (ModelState.IsValid)
-            {
-                productRep.Add(product);
-                productRep.Savechanges();
-            }
             return RedirectToAction("GetAllProduct", "Admin");
         }
 
@@ -205,12 +263,12 @@ namespace marmeladka.Controllers
                     prodRep.Add(product);
                     prodRep.Savechanges();
                 }
-                else 
+                else
                 {
                     var product = Mapper.Map(viewModel);
                     prodRep.Update(product);
                     prodRep.Savechanges();
-                }               
+                }
             }
             return RedirectToAction("GetAllProduct");
         }

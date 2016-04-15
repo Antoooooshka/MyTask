@@ -1,5 +1,6 @@
 ﻿using marmeladka.core.entities;
 using marmeladka.ViewModels;
+using marmeladka.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -104,9 +105,29 @@ namespace marmeladka.Mappers
                 retail_price = productView.Retail_price ?? 0,
                 product_weight = productView.Product_weight ?? 0,
                 categoryId = productView.CategoryId,
-                companyId = productView.CompanyId          
+                companyId = productView.CompanyId
             };
             return product;
+        }
+        public static Admin Map(AdminViewModel viewModel)
+        {
+            var admin = new Admin
+            {
+                Id = viewModel.Id,
+                Name = viewModel.Name,
+                Password = viewModel.Password
+            };
+            return admin;
+        }
+        public static AdminViewModel Map(Admin admin)
+        {
+            var viewModel = new AdminViewModel
+            {
+                Id = admin.Id,
+                Name = admin.Name,
+                Password = admin.Password
+            };
+            return viewModel;
         }
     }
 }

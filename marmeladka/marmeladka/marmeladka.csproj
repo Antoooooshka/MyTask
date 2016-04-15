@@ -110,6 +110,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminServise\Servise.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
@@ -119,11 +120,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Mapper\Mapper.cs" />
+    <Compile Include="Repositories\AdminRepository.cs" />
     <Compile Include="Repositories\CategoryRepository.cs" />
     <Compile Include="Repositories\CompanyRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
     <Compile Include="Validator\Validation.cs" />
     <Compile Include="ViewModel\ActionViewModel.cs" />
+    <Compile Include="ViewModel\AdminViewModel.cs" />
     <Compile Include="ViewModel\CategoryViewModel.cs" />
     <Compile Include="ViewModel\CompanyViewModel.cs" />
     <Compile Include="ViewModel\OrderViewModel.cs" />
@@ -187,6 +190,9 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\jquery-2.2.2.min.map" />
+    <Content Include="Views\Admin\LoginForm.cshtml" />
+    <Content Include="Views\Admin\GetAllAdmin.cshtml" />
+    <Content Include="Views\Shared\_AddAdminPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

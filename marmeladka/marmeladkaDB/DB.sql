@@ -4,11 +4,13 @@ GO
 CREATE TABLE category(
 id uniqueidentifier NOT NULL PRIMARY KEY,
 name nvarchar(100) NOT NULL,
+isDelete bit
 );
 
 CREATE TABLE company(
 id uniqueidentifier NOT NULL PRIMARY KEY,
 name nvarchar(100) NOT NULL,
+isDelete bit
 );
 
 CREATE TABLE product(
@@ -45,5 +47,12 @@ productId uniqueidentifier NOT NULL,
 CONSTRAINT fk_action_products FOREIGN KEY (productId) REFERENCES product(id),
 ordersId uniqueidentifier NOT NULL,
 CONSTRAINT fk_action_orders FOREIGN KEY (ordersId) REFERENCES [order](Id)
+);
+
+CREATE TABLE [Admin](
+Id uniqueidentifier NOT NULL PRIMARY KEY,
+Name nvarchar(50) UNIQUE NOT NULL,
+Salt nvarchar(50) NOT NULL,
+[Password] nvarchar(50) NOT NULL
 );
 

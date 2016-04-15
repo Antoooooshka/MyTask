@@ -20,12 +20,12 @@ namespace marmeladka.core.entities
             this.action_order = new HashSet<action_order>();
         }
     
-        public Guid id { get; set; }
+        public System.Guid id { get; set; }
         public string name { get; set; }
         public decimal opt_price { get; set; }
         public decimal retail_price { get; set; }
-        public Guid categoryId { get; set; }
-        public Guid companyId { get; set; }
+        public System.Guid categoryId { get; set; }
+        public System.Guid companyId { get; set; }
         public int product_weight { get; set; }
         public byte[] img { get; set; }
     
