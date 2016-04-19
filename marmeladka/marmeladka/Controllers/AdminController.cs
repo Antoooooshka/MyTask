@@ -2,9 +2,8 @@
 using marmeladka.AdminServise;
 using marmeladka.Repositories;
 using marmeladka.Validator;
-using marmeladka.ViewModels;
+using marmeladka.ViewModel;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -15,7 +14,6 @@ namespace marmeladka.Controllers
     [Authorize]
     public class AdminController : Controller
     {
-
         [AllowAnonymous]
         public ActionResult LoginForm()
         {
@@ -23,14 +21,17 @@ namespace marmeladka.Controllers
         }
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult Login(string name, string password) // переделать с верификацией пароля и модели
+        public ActionResult Login(string name, string password)
         {
             AdminRepository admRep = new AdminRepository();
             var admin = admRep.ChekUniqueAdminName(name);
-            if (admin != null)
+            if (admin != null && admin.Password == Servise.GetHash(password, admin.Salt))
             {
-
                 FormsAuthentication.SetAuthCookie(name, false);
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Пароль не совпадает");
             }
             return RedirectToAction("Administration");
         }
@@ -251,7 +252,7 @@ namespace marmeladka.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddOrUpdateProduct(ProductViewModel viewModel)
+        public ActionResult AddOrUpdateProduct(ProductViewModel viewModel, HttpPostedFileBase img)
         {
             ProductRepository prodRep = new ProductRepository();
             if (Validation.Validate(viewModel))
@@ -260,17 +261,34 @@ namespace marmeladka.Controllers
                 {
                     var product = Mapper.Map(viewModel);
                     product.id = Guid.NewGuid();
+                    if (img != null)
+                    {
+                        product.img = new byte[img.ContentLength];
+                        img.InputStream.Read(product.img, 0, img.ContentLength);
+                    }
                     prodRep.Add(product);
                     prodRep.Savechanges();
                 }
                 else
                 {
                     var product = Mapper.Map(viewModel);
+                    if (img != null)
+                    {
+                        product.img = new byte[img.ContentLength];
+                        img.InputStream.Read(product.img, 0, img.ContentLength);
+                    }
                     prodRep.Update(product);
                     prodRep.Savechanges();
                 }
             }
             return RedirectToAction("GetAllProduct");
+        }
+
+        public ActionResult GetImage(Guid id)
+        {
+            ProductRepository prodRep = new ProductRepository();
+            var image = prodRep.GetProductById(id).img;
+            return image != null ? File(image, "image") : null;
         }
     }
 }

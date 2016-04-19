@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace marmeladka.Repositories
 {
@@ -14,11 +13,11 @@ namespace marmeladka.Repositories
         }
         public IEnumerable<product> GetProducts() 
         {
-            return dbSet.ToList();
+            return DbSet.ToList();
         }
         public product GetProductById(Guid? id)
         {
-            return dbSet.Find(id);
+            return DbSet.Find(id);
         }
 
     }

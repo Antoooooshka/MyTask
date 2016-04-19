@@ -1,13 +1,14 @@
-﻿@model IEnumerable<marmeladka.ViewModel.CategoryViewModel>
+﻿@model IEnumerable<marmeladka.ViewModel.AdminViewModel>
 
 @{
-    ViewBag.Title = "GetAllCategories";
+    ViewBag.Title = "GetAllAdmin";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+
 <table class="table table-hover table-condensed">
     <thead>
         <tr>
-            <th>Имя</th>
+            <th>Имя Администратора</th>
         </tr>
     </thead>
     <tbody>
@@ -15,27 +16,28 @@
         {          
             <tr>
                 <td>@item.Name</td>
-                <td><button type="button" data-model-id="@item.Id" onclick="AddOrUpdateModel(this)" class="btn btn-success">Обновить</button></td>
-                <td><a href="@Url.Action("DeleteCategory", "Admin", new { id = item.Id })" class="btn btn-danger">Удалить</a></td>
+                <td><a href="@Url.Action("DeleteAdmin", "Admin", new { id = item.Id })" class="btn btn-danger">Удалить</a></td>
             </tr>
         }
     </tbody>
 </table>
 
 <div class="col-md-1">
-    <button class="btn btn-primary" type="button" data-model-id="null" onclick="AddOrUpdateModel(this)">Добавить</button>
+    <button class="btn btn-primary" type="button" onclick="AddModel()">Добавить</button>
 </div>
+
+
 
 <div id="modDialog" class="modal fade">
     <div id="dialogContent" class="modal-dialog"></div>
 </div>
 
 <script type="text/javascript">
-    function AddOrUpdateModel(event) {
+    function AddModel() {
         $.ajax({
             cache: false,
             type: 'GET',
-            url: "/Admin/GetAddOrUpdateCategoryForm/?id=" + event.getAttribute("data-model-id"),
+            url: "/Admin/AddAdminForm/",
             async: true,
             success: function (result) {
                 $("#dialogContent").html(result);

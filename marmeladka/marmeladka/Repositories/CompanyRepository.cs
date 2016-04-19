@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-
 namespace marmeladka.Repositories
 {
     public class CompanyRepository : BaseRepository<company>
@@ -14,11 +12,11 @@ namespace marmeladka.Repositories
         }
         public IEnumerable<company> GetAllCompany()
         {
-            return dbSet.ToList();
+            return DbSet.ToList();
         }
         public company GetCompanyById(Guid? id)
         {
-            return dbSet.Find(id);
+            return DbSet.Find(id);
         }
     }
 }

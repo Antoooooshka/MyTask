@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-
 namespace marmeladka.Repositories
 {
     public class CategoryRepository : BaseRepository<category>
@@ -15,12 +13,12 @@ namespace marmeladka.Repositories
 
         public IEnumerable<category> GetAllCategory() 
         {
-           return dbSet.ToList();
+           return DbSet.ToList();
         }
 
         public category GetCategoryById(Guid? id)
         {
-           return dbSet.Find(id);
+           return DbSet.Find(id);
         }
     }
 }

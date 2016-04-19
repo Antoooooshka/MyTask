@@ -1,9 +1,6 @@
 ﻿using marmeladka.core.entities;
-using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Web;
 
 namespace marmeladka.Repositories
 {
@@ -15,7 +12,7 @@ namespace marmeladka.Repositories
         }
         public IEnumerable<user> GetUsers() 
         {
-            return dbSet.ToList();
+            return DbSet.ToList();
         }
     }
 }

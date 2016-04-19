@@ -1,10 +1,7 @@
 ﻿using marmeladka.core.entities;
-using marmeladka.ViewModels;
-using marmeladka.ViewModels;
+using marmeladka.ViewModel;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using marmeladka.ViewModel;
 
 namespace marmeladka.Mappers
 {
@@ -90,8 +87,8 @@ namespace marmeladka.Mappers
                 Product_weight = product.product_weight,
                 CategoryId = product.categoryId,
                 CompanyId = product.companyId,
-                Company = Mapper.Map(product.company),
-                Category = Mapper.Map(product.category)
+                Company = Map(product.company),
+                Category = Map(product.category)
             };
             return productView;
         }

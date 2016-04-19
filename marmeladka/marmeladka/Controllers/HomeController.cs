@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using marmeladka.core.entities;
 using System.Data.Entity;
-using marmeladka.ViewModels;
+using marmeladka.ViewModel;
 using marmeladka.Repositories;
 using marmeladka.Mappers;
 

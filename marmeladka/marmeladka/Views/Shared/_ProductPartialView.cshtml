@@ -1,4 +1,4 @@
-﻿@model IEnumerable<marmeladka.ViewModels.ProductViewModel>
+﻿@model IEnumerable<marmeladka.ViewModel.ProductViewModel>
 
 <ul class="thumbnails">
 
@@ -6,7 +6,7 @@
     {
         <li class="span3">
             <div class="thumbnail">
-                <img src="holder.js/300x200" alt="">
+                <img src="@Url.Action("GetImage", "Admin", new { item.Id })" alt="image" width="300" height="200">
                 <div class="caption">
                     <h4>@item.Name</h4>
                     @item.Company.Name @item.Category.Name

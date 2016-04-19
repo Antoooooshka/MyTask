@@ -1,10 +1,10 @@
-﻿@model marmeladka.ViewModels.ProductViewModel
+﻿@model marmeladka.ViewModel.ProductViewModel
 <div class="modal-content">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="myModalLabel">Заполните форму</h3>
     </div>
-    @using (Html.BeginForm("AddOrUpdateProduct", "Admin", FormMethod.Post, new { @class = "form-group" }))
+    @using (Html.BeginForm("AddOrUpdateProduct", "Admin", FormMethod.Post, new {enctype = "multipart/form-data", @class = "form-group" }))
     {
         <div class="modal-body">
             @Html.HiddenFor(x => x.Id)
@@ -21,6 +21,7 @@
             @Html.ValidationMessageFor(x => x.Retail_price)
             @Html.TextBoxFor(x => x.Product_weight, new { placeholder = "Имеющийся вес", @class = "form-control" })
             @Html.ValidationMessageFor(x => x.Product_weight)
+            <input type="file" name ="img" class="btn" />
         </div>
         <div class="modal-footer">
             <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
