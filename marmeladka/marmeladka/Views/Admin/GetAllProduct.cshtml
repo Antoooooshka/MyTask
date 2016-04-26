@@ -21,7 +21,7 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td><img src="@Url.Action("GetImage", "Admin", new { item.Id })" width="35" height="35"/></td>
+                <td><img src="@Url.Action("GetImage", "Admin", new { item.Id })" class="img-circle" width="40" height="45"/></td>
                 <td>@item.Name</td>
                 <td>@item.Category.Name</td>
                 <td>@item.Company.Name</td>
@@ -29,7 +29,8 @@
                 <td>@item.Retail_price</td>
                 <td>@item.Product_weight</td>
                 <td>
-                    <button type="button" data-model-id="@item.Id" onclick="AddOrUpdateModel(this)" class="btn btn-success">Обновить</button></td>
+                    <button type="button" data-model-id="@item.Id" onclick="AddOrUpdateModel(this)" class="btn btn-success">Обновить</button>
+                </td>
                 <td><a href="@Url.Action("DeleteProduct", "Admin", new { id = item.Id })" class="btn btn-danger">Удалить</a></td>
             </tr>
         }

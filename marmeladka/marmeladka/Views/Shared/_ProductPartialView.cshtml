@@ -1,25 +1,30 @@
 ﻿@model IEnumerable<marmeladka.ViewModel.ProductViewModel>
-
-<ul class="thumbnails">
-
-    @foreach (var item in Model)
-    {
-        <li class="span3">
-            <div class="thumbnail">
-                <img src="@Url.Action("GetImage", "Admin", new { item.Id })" alt="image" width="300" height="200">
-                <div class="caption">
-                    <h4>@item.Name</h4>
-                    @item.Company.Name @item.Category.Name
-                    <p>Цена @item.Retail_price Вес: 100 грамм</p>
-                    <div class="row">
-                        <div class="span1">
-                            <button class="btn btn-primary">Добавить</button>
-                        </div>
-                        <input type="text" class="span2 pull-right productinput"/>
-                    </div>           
+@foreach (var item in Model)
+{
+    <div class="col-sm-4">
+        <div class="product-image-wrapper">
+            <div class="single-products">
+                <div class="productinfo text-center">
+                    <img src="@Url.Action("GetProductImage", "Product", new { id = item.Id })" alt="@item.Name"/>
+                    <h2>@item.Name</h2>
+                    <p>@item.Retail_price</p>
+                    <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                </div>
+                <div class="product-overlay">
+                    <div class="overlay-content">
+                        <h2>$56</h2>
+                        <p>Easy Polo Black Edition</p>
+                        <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                    </div>
                 </div>
             </div>
-        </li>
-    }
-</ul>
+            <div class="choose">
+                <ul class="nav nav-pills nav-justified">
+                    <li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+                    <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+}
 

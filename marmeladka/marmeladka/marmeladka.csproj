@@ -140,6 +140,9 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="content\css\animate.css" />
+    <Content Include="content\css\bootstrap.min.css" />
+    <Content Include="content\css\font-awesome.min.css" />
     <Content Include="content\css\font-awesome\css\font-awesome-ie7.css" />
     <Content Include="content\css\font-awesome\css\font-awesome-ie7.min.css" />
     <Content Include="content\css\font-awesome\css\font-awesome.css" />
@@ -158,10 +161,19 @@
     <Content Include="content\css\font-awesome\less\mixins.less" />
     <Content Include="content\css\font-awesome\less\path.less" />
     <Content Include="content\css\font-awesome\less\variables.less" />
-    <Content Include="content\css\mermeladstyle.css" />
+    <Content Include="content\css\main.css" />
+    <Content Include="content\css\prettyPhoto.css" />
+    <Content Include="content\css\price-range.css" />
+    <Content Include="content\css\responsive.css" />
+    <Content Include="content\fonts\fontawesome-webfont.svg" />
+    <Content Include="content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="content\img\back.png" />
+    <Content Include="content\img\girl1.jpg" />
+    <Content Include="content\img\girl2.jpg" />
+    <Content Include="content\img\girl3.jpg" />
     <Content Include="content\img\logo.png" />
     <Content Include="content\img\logo1.png" />
+    <Content Include="content\img\pricing.png" />
     <Content Include="content\js\bootstrap\css\bootstrap-responsive.css" />
     <Content Include="content\js\bootstrap\css\bootstrap-responsive.min.css" />
     <Content Include="content\js\bootstrap\css\bootstrap.css" />
@@ -172,8 +184,20 @@
     <Content Include="content\js\bootstrap\js\bootstrap.min.js" />
     <Content Include="content\js\holder.js" />
     <Content Include="content\js\jquery-1.10.0.min.js" />
+    <Content Include="content\js\js\bootstrap.min.js" />
+    <Content Include="content\js\js\contact.js" />
+    <Content Include="content\js\js\gmaps.js" />
+    <Content Include="content\js\js\html5shiv.js" />
+    <Content Include="content\js\js\jquery.js" />
+    <Content Include="content\js\js\jquery.prettyPhoto.js" />
+    <Content Include="content\js\js\jquery.scrollUp.min.js" />
+    <Content Include="content\js\js\main.js" />
+    <Content Include="content\js\js\price-range.js" />
     <Content Include="content\js\script.js" />
     <Content Include="Global.asax" />
+    <Content Include="content\fonts\fontawesome-webfont.woff" />
+    <Content Include="content\fonts\FontAwesome.otf" />
+    <Content Include="content\fonts\glyphicons-halflings-regular.woff" />
     <None Include="Scripts\jquery-2.2.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.2.js" />
     <Content Include="Scripts\jquery-2.2.2.min.js" />
@@ -240,9 +264,6 @@
     <Content Include="Views\Admin\GetAllProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\_AddUserForm.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Shared\_AddCategoryPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -250,9 +271,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_AddProductPartialView.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\_UpdateCategoryPartialView.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

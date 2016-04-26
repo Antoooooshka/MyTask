@@ -247,8 +247,7 @@ namespace marmeladka.Controllers
                 var viewModels = Mapper.Map(productRes.GetProductById(id));
                 return PartialView("_AddProductPartialView", viewModels);
             }
-            else
-                return PartialView("_AddProductPartialView", new ProductViewModel { Id = Guid.Empty });
+            return PartialView("_AddProductPartialView", new ProductViewModel { Id = Guid.Empty });
         }
 
         [HttpPost]

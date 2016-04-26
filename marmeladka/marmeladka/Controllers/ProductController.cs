@@ -17,5 +17,12 @@ namespace marmeladka.Controllers
             return PartialView("_ProductPartialView",product);
         }
 
+        public ActionResult GetProductImage(Guid id)
+        {
+            ProductRepository prodRep = new ProductRepository();
+            var image = prodRep.GetProductById(id).img;
+            return image != null ? File(image, "image") : null;
+        }
+
     }
 }

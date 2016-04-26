@@ -1,16 +1,15 @@
 ﻿@model IEnumerable<marmeladka.ViewModel.CompanyViewModel>
 
-<div class="well">
-    <h4>Filters</h4>
-    <form>
-        @foreach (var item in Model)
-        {
-            <label class="checkbox">
-                <input type="checkbox" value="@item.Id">
-                @item.Name
-            </label> 
-        }
-        <button class="btn btn-primary pull-right" type="submit">Filter</button>
-    </form>
+<div class="brands_products">
+    <!--brands_products-->
+    <h2>Company</h2>
+    <div class="brands-name">
+        <ul class="nav nav-pills nav-stacked">
+            @foreach (var item in Model)
+            {
+                <li><a href="#">@item.Name</a></li>
+            }      
+        </ul>
+    </div>
 </div>
 
