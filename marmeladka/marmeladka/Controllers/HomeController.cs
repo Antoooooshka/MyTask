@@ -18,5 +18,12 @@ namespace marmeladka.Controllers
             return View();
         }
 
+        public ActionResult Order()
+        {
+            ProductRepository productRep = new ProductRepository();
+            var product = productRep.GetProducts().Select(x => Mapper.Map(x));
+            return View(product);
+        }
+
     }
 }

@@ -168,6 +168,7 @@
     <Content Include="content\fonts\fontawesome-webfont.svg" />
     <Content Include="content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="content\img\back.png" />
+    <Content Include="content\img\bg-dark-4785.jpg" />
     <Content Include="content\img\girl1.jpg" />
     <Content Include="content\img\girl2.jpg" />
     <Content Include="content\img\girl3.jpg" />
@@ -217,6 +218,9 @@
     <Content Include="Views\Admin\LoginForm.cshtml" />
     <Content Include="Views\Admin\GetAllAdmin.cshtml" />
     <Content Include="Views\Shared\_AddAdminPartialView.cshtml" />
+    <Content Include="Views\Shared\_HomeLayout.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Order.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -232,9 +236,6 @@
       <Project>{fff77024-3a8c-4c94-acfc-9119e8b36d8a}</Project>
       <Name>marmeladka.core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_CategoryPartialView.cshtml" />

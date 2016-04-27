@@ -8,23 +8,27 @@
                     <img src="@Url.Action("GetProductImage", "Product", new { id = item.Id })" alt="@item.Name"/>
                     <h2>@item.Name</h2>
                     <p>@item.Retail_price</p>
-                    <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                    <p>Тут описание товара</p>
+                    <a href="#" class="btn btn-default add-to-cart" data-item-id="@item.Id" id="addbutton"><i class="fa fa-shopping-cart"></i>В корзину</a>
                 </div>
-                <div class="product-overlay">
+                @*<div class="product-overlay">
                     <div class="overlay-content">
                         <h2>$56</h2>
                         <p>Easy Polo Black Edition</p>
                         <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                     </div>
-                </div>
+                </div>*@
             </div>
             <div class="choose">
                 <ul class="nav nav-pills nav-justified">
-                    <li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-                    <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
+                    <li><a href="#"><i class="fa fa-plus-square"></i>100 грамм</a></li>
+                    <li><a href="#"><i class="fa fa-minus-square"></i>100 грамм</a></li>
                 </ul>
             </div>
         </div>
     </div>
 }
+    <script type="text/javascript">
+    
+    </script>
 

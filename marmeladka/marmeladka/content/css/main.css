@@ -205,12 +205,12 @@ a#scrollUp i{
 
 
 .shop-menu ul li a i{
-	margin-right:3px;
+	margin-right:10px;
 }
 
 
 .shop-menu ul li a:hover {
-	color:#fe980f;
+	color:#e00d1c;
 	background:#fff;
 }
 
@@ -1365,6 +1365,11 @@ h2.title {
   padding-top: 15px;
   resize: none;
   width: 99.5%;
+}
+
+#logoimg {
+    width: 450px;
+    height: 80px;
 }
 
 #reviews button {
