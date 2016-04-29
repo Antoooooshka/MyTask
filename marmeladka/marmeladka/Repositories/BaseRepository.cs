@@ -14,7 +14,6 @@ namespace marmeladka.Repositories
             _marmDb = db;
             DbSet = db.Set<T>();
         }
-
         public void Savechanges()
         {
             _marmDb.SaveChanges();

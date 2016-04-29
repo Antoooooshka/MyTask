@@ -27,14 +27,14 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="logo pull-left">
-                            <a href="@Url.Action("Index","Home")">
+                            <a href="@Url.Action("Index", "Home")">
                                 <img src="~/content/img/logo1.png" alt="Marmeladka.by" id="logoimg" /></a>
                         </div>
                     </div>
                     <div class="col-sm-8">
                         <div class="shop-menu pull-right">
                             <ul class="nav navbar-nav">
-                                <li><a href="@Url.Action("Order","Home")"><i class="fa fa-shopping-cart"></i>Моя корзина <b id="productCount" style="padding-right: 10px; color: yellow;">0</b></a></li>
+                                <li><a id="CartBTN" href=""><i class="fa fa-shopping-cart"></i>Моя корзина <b id="productCount" style="padding-right: 10px; color: yellow;">0</b></a></li>
                             </ul>
                         </div>
 
@@ -178,6 +178,37 @@
     <script src="~/content/js/js/price-range.js"></script>
     <script src="~/content/js/js/jquery.prettyPhoto.js"></script>
     <script src="~/content/js/js/main.js"></script>
+
+    <script type="text/javascript">
+
+        function AddOrder(obj) {
+            var dto = {
+                Id: obj.getAttribute("data-item-id"),
+                OrderWeight: 100
+            };
+            $.ajax({
+                cashe: false,
+                type: 'POST',
+                url: "@Url.Action("AddToRecycle", "Home")",
+                data: JSON.stringify(dto),
+                contentType: "application/json; charset=utf-8",
+                datatype: "json",
+                async: true
+            });
+        };
+
+        @*$('#CartBTN').click(function () {
+            $.ajax({
+                cashe: false,
+                type: 'POST',
+                url: "@Url.Action("Order", "Home")",
+                data: JSON.stringify(order),
+                contentType: "application/json; charset=utf-8",
+                datatype: "json",
+                async: true
+            });
+        });*@
+    </script>
 
 </body>
 </html>

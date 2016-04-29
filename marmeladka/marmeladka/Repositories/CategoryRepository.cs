@@ -10,7 +10,6 @@ namespace marmeladka.Repositories
         {
 
         }
-
         public IEnumerable<category> GetAllCategory() 
         {
            return DbSet.ToList();
