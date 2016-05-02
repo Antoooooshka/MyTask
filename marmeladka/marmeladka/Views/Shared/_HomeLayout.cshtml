@@ -34,7 +34,7 @@
                     <div class="col-sm-8">
                         <div class="shop-menu pull-right">
                             <ul class="nav navbar-nav">
-                                <li><a id="CartBTN" href=""><i class="fa fa-shopping-cart"></i>Моя корзина <b id="productCount" style="padding-right: 10px; color: yellow;">0</b></a></li>
+                                <li><a id="CartBTN" href="@Url.Action("Order","Home")"><i class="fa fa-shopping-cart"></i>Моя корзина <b id="productCount" style="padding-right: 10px; color: yellow;">0</b></a></li>
                             </ul>
                         </div>
 
@@ -184,7 +184,7 @@
         function AddOrder(obj) {
             var dto = {
                 Id: obj.getAttribute("data-item-id"),
-                OrderWeight: 100
+                ProductWeight: 100
             };
             $.ajax({
                 cashe: false,

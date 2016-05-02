@@ -1,6 +1,7 @@
 ﻿using marmeladka.core.entities;
 using marmeladka.ViewModel;
 using System;
+using marmeladka.DTOs;
 using marmeladka.ViewModel;
 
 namespace marmeladka.Mappers

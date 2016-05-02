@@ -16,7 +16,8 @@ namespace marmeladka.Controllers
 
     public class HomeController : Controller
     {
-        private Dictionary<string, IEnumerable<ProductDTO>> sessionOrder = new Dictionary<string, IEnumerable<ProductDTO>>();
+        //private static Dictionary<string, List<ProductDTO>> sessionOrder = new Dictionary<string, List<ProductDTO>>();
+        private static List<ProductDTO> product = new List<ProductDTO>();
 
         public ActionResult Index()
         {
@@ -25,18 +26,19 @@ namespace marmeladka.Controllers
 
         [HttpPost]
         public bool AddToRecycle(ProductDTO dto)
-        {
+        {          
             bool flag = false;
-            List<ProductDTO> product = new List<ProductDTO>();
             if (product.Count == 0)
+            {
                 product.Add(dto);
+            }
             else
             {
                 for (int i = 0; i < product.Count; i++)
                 {
                     if (product[i].Id == dto.Id)
                     {
-                        product[i].OrderWeight += 100;
+                        product[i].ProductWeight += 100;
                         flag = true;
                         break;
                     }
@@ -46,17 +48,16 @@ namespace marmeladka.Controllers
                     product.Add(dto);
                 }
             }
-            sessionOrder.Add(Session.SessionID, product);
+            //sessionOrder.Add(Session.SessionID, product);
             return true;
         }
-        [HttpPost]
+
         public ActionResult Order()
         {
-            IEnumerable<Guid> irw = sessionOrder[Session.SessionID].Select(x => x.Id);
-
+            IEnumerable<Guid> products = HomeController.product.Select(x => x.Id);
             ProductRepository productRep = new ProductRepository();
-            var product = productRep.GetProducts().Select(x => Mapper.Map(x));
-            return View("Order",product);
+            var product = productRep.GetProducts().Where(x => products.Contains(x.id)).Select(x => Mapper.Map(x)); // тут косяк
+            return View("Order", product);
         }
 
     }
