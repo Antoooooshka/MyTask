@@ -30,7 +30,8 @@ namespace marmeladka.core.entities
         public virtual DbSet<company> company { get; set; }
         public virtual DbSet<order> order { get; set; }
         public virtual DbSet<product> product { get; set; }
-        public virtual DbSet<user> user { get; set; }
         public virtual DbSet<Admin> Admin { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public virtual DbSet<user> user { get; set; }
     }
 }

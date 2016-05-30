@@ -16,48 +16,53 @@ namespace marmeladka.Controllers
 
     public class HomeController : Controller
     {
-        //private static Dictionary<string, List<ProductDTO>> sessionOrder = new Dictionary<string, List<ProductDTO>>();
-        private static List<ProductDTO> product = new List<ProductDTO>();
-
         public ActionResult Index()
         {
             return View();
         }
 
         [HttpPost]
-        public bool AddToRecycle(ProductDTO dto)
-        {          
-            bool flag = false;
-            if (product.Count == 0)
+        public ActionResult Cart(List<ProductDTO> dtos)
+        {
+            if (dtos != null)
+                Session["basket"] = dtos;
+            IEnumerable<Guid> products = dtos.Select(x => x.Id);
+            ProductRepository productRep = new ProductRepository();
+            List<ProductOrderDTO> productByDb = productRep.GetProducts().Where(x => products.Contains(x.id)).Select(x => Mapper.DtoMap(x)).ToList();
+            for (int i = 0; i < productByDb.Count; i++)
             {
-                product.Add(dto);
-            }
-            else
-            {
-                for (int i = 0; i < product.Count; i++)
+                foreach (ProductDTO t in dtos)
                 {
-                    if (product[i].Id == dto.Id)
+                    if (productByDb[i].Id == t.Id)
                     {
-                        product[i].ProductWeight += 100;
-                        flag = true;
-                        break;
+                        productByDb[i].ProductWeight = t.ProductWeight;
+                        productByDb[i].TotalPrice = t.ProductWeight * (productByDb[i].Retail_price / 100);
                     }
                 }
-                if (!flag)
-                {
-                    product.Add(dto);
-                }
             }
-            //sessionOrder.Add(Session.SessionID, product);
-            return true;
+            OrderRequestDTO orderDto = new OrderRequestDTO();
+            orderDto.ProductList = productByDb;
+            return PartialView("_ConfirmOrderPartialView", orderDto);
         }
 
-        public ActionResult Order()
+        [HttpPost]
+        public string Order(OrderRequestDTO orderRequestDto)
         {
-            IEnumerable<Guid> products = HomeController.product.Select(x => x.Id);
-            ProductRepository productRep = new ProductRepository();
-            var product = productRep.GetProducts().Where(x => products.Contains(x.id)).Select(x => Mapper.Map(x)); // тут косяк
-            return View("Order", product);
+            if (orderRequestDto != null)
+            {
+                UserRepository userRep = new UserRepository();
+                userRep.Add(new user
+                {
+                    id = Guid.NewGuid(),
+                    adress = orderRequestDto.Adress,
+                    email = orderRequestDto.Email,
+                    name = orderRequestDto.Name,
+                    second_name = orderRequestDto.Second_name,
+                    postcode = orderRequestDto.Postcode
+                });
+               return "Спасибо. Ваш заказ записан!";
+            }
+            return "Что-то пошло не так";
         }
 
     }

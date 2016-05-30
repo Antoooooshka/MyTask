@@ -25,7 +25,7 @@ namespace marmeladka.core.entities
         public string second_name { get; set; }
         public string adress { get; set; }
         public string email { get; set; }
-        public int postcode { get; set; }
+        public string postcode { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<order> order { get; set; }

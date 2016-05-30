@@ -169,11 +169,7 @@ namespace marmeladka.Controllers
                 var viewModel = Mapper.Map(catRep.GetCategoryById(id));
                 return PartialView("_AddCategoryPartialView", viewModel);
             }
-            else
-            {
-                return PartialView("_AddCategoryPartialView", new CategoryViewModel { Id = Guid.Empty, IsDelete = false });
-            }
-
+            return PartialView("_AddCategoryPartialView", new CategoryViewModel { Id = Guid.Empty, IsDelete = false });
         }
         [HttpPost]
         public ActionResult AddOrUpdateCategory(CategoryViewModel viewModel)
@@ -207,9 +203,7 @@ namespace marmeladka.Controllers
                 var viewModel = Mapper.Map(compRes.GetCompanyById(id));
                 return PartialView("_AddCompanyPartialView", viewModel);
             }
-            else
-                return PartialView("_AddCompanyPartialView", new CompanyViewModel { Id = Guid.Empty, IsDelete = false });
-
+            return PartialView("_AddCompanyPartialView", new CompanyViewModel { Id = Guid.Empty, IsDelete = false });
         }
 
         [HttpPost]

@@ -10,13 +10,14 @@
         <EntityTypeShape EntityType="marmeladkaDBModel.company" Width="1.5" PointX="0.75" PointY="5.625" IsExpanded="true" />
         <EntityTypeShape EntityType="marmeladkaDBModel.order" Width="1.5" PointX="3" PointY="8.5" IsExpanded="true" />
         <EntityTypeShape EntityType="marmeladkaDBModel.product" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="marmeladkaDBModel.user" Width="1.5" PointX="0.75" PointY="8.25" IsExpanded="true" />
         <AssociationConnector Association="marmeladkaDBModel.fk_action_orders" ManuallyRouted="false" />
         <AssociationConnector Association="marmeladkaDBModel.fk_action_products" ManuallyRouted="false" />
         <AssociationConnector Association="marmeladkaDBModel.fk_product_category" ManuallyRouted="false" />
         <AssociationConnector Association="marmeladkaDBModel.fk_product_company" ManuallyRouted="false" />
-        <AssociationConnector Association="marmeladkaDBModel.fk_orders_user" ManuallyRouted="false" />
         <EntityTypeShape EntityType="marmeladkaDBModel.Admin" Width="1.5" PointX="7" PointY="3.625" />
+        <EntityTypeShape EntityType="marmeladkaDBModel.sysdiagrams" Width="1.5" PointX="6.625" PointY="6.625" />
+        <EntityTypeShape EntityType="marmeladkaDBModel.user" Width="1.5" PointX="3.875" PointY="4.875" />
+        <AssociationConnector Association="marmeladkaDBModel.fk_orders_user" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

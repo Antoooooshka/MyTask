@@ -7,6 +7,6 @@
         public string Second_name { get; set; }
         public string Adress { get; set; }
         public string Email { get; set; }
-        public int Postcode { get; set; }
+        public string Postcode { get; set; }
     }
 }

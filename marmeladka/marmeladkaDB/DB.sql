@@ -31,7 +31,7 @@ name nvarchar(100) NOT NULL,
 second_name nvarchar(100) NOT NULL,
 adress nvarchar(100) NOT NULL,
 email nvarchar(100) NOT NULL,
-postcode int NOT NULL
+postcode nvarchar(50) NOT NULL
 );
 
 CREATE TABLE [order](

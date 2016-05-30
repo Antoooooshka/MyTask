@@ -127,5 +127,19 @@ namespace marmeladka.Mappers
             };
             return viewModel;
         }
+
+        public static ProductOrderDTO DtoMap(product product)
+        {
+            ProductOrderDTO productDto = new ProductOrderDTO
+            {
+                Id = product.id,
+                Name = product.name,
+                //ProductWeight = product.product_weight,
+                CategoryId = product.categoryId,
+                Retail_price = product.retail_price,
+                CompanyId = product.companyId
+            };
+            return productDto;            
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<marmeladka.ViewModel.ProductViewModel>
+﻿@model IEnumerable<marmeladka.DTOs.ProductOrderDTO>
 @foreach (var item in Model)
 {
     <div class="col-sm-4">
@@ -9,7 +9,7 @@
                     <h2>@item.Name</h2>
                     <p>@item.Retail_price</p>
                     <p>Тут описание товара</p>
-                    <a href="#" class="btn btn-default add-to-cart" data-item-id="@item.Id" id="addbutton" onclick="AddOrder(this)"><i class="fa fa-shopping-cart"></i>В корзину</a>
+                    <a href="javascript:void(0)" class="btn btn-default add-to-cart" data-item-id="@item.Id" onclick="AddOrder(this)"><i class="fa fa-shopping-cart"></i>В корзину</a>
                 </div>
                 @*<div class="product-overlay">
                     <div class="overlay-content">
@@ -21,11 +21,15 @@
             </div>
             <div class="choose">
                 <ul class="nav nav-pills nav-justified">
-                    <li><a href="#"><i class="fa fa-plus-square"></i>100 грамм</a></li>
-                    <li><a href="#"><i class="fa fa-minus-square"></i>100 грамм</a></li>
+                    <li><a href="javascript:void(0)"><i class="fa fa-plus-square"></i>100 грамм</a></li>
+                    <li><a href="#javascript:void(0)"><i class="fa fa-minus-square"></i>100 грамм</a></li>
                 </ul>
             </div>
         </div>
     </div>
 }
+
+<div id="modDialog" class="modal fade">
+    <div id="dialogContent" class="modal-dialog" style="width: 1200px"></div>
+</div>
 

@@ -85,6 +85,9 @@
     <Compile Include="entities\product.cs">
       <DependentUpon>marmeladkaDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="entities\sysdiagrams.cs">
+      <DependentUpon>marmeladkaDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="entities\user.cs">
       <DependentUpon>marmeladkaDB.tt</DependentUpon>
     </Compile>

@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using System.Web.Optimization
+@using System.Web.UI.WebControls
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="utf-8">
@@ -6,13 +8,13 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Marmeladka.by</title>
-    <link href="~/content/css/bootstrap.min.css" rel="stylesheet">
-    <link href="~/content/css/prettyPhoto.css" rel="stylesheet">
-    <link href="~/content/css/price-range.css" rel="stylesheet">
-    <link href="~/content/css/animate.css" rel="stylesheet">
-    <link href="~/content/css/main.css" rel="stylesheet">
-    <link href="~/content/css/responsive.css" rel="stylesheet">
-    <link href="~/content/css/font-awesome.min.css" rel="stylesheet">
+    @Styles.Render("~/bundles/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/knockout")
+    @Scripts.Render("~/bundles/otherjs")
+
+    @*<script src="~/content/js/js/jquery.js"></script>
+    <script src="~/content/js/knockout-3.4.0.js"></script>*@
     <!--[if lt IE 9]>
     <script src="~/content/js/js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
@@ -34,7 +36,7 @@
                     <div class="col-sm-8">
                         <div class="shop-menu pull-right">
                             <ul class="nav navbar-nav">
-                                <li><a id="CartBTN" href="@Url.Action("Order","Home")"><i class="fa fa-shopping-cart"></i>Моя корзина <b id="productCount" style="padding-right: 10px; color: yellow;">0</b></a></li>
+                                <li><a id="CartBTN" href="javascript:void(0)" onclick="SendOrderToCart()"><i class="fa fa-shopping-cart"></i>Моя корзина <b id="productCount" style="padding-right: 10px; color: yellow;">0</b></a></li>
                             </ul>
                         </div>
 
@@ -171,44 +173,205 @@
 
     </footer>
     <!--/Footer-->
+<script type="text/javascript">
+    
+    var i = 0, step = 100, validationNumber = 0;
+    var dictionary = {
+        totalPrice: 0
+    };
+    var formObject = {
+        defValidateNumber: 0
+    };
 
-    <script src="~/content/js/js/jquery.js"></script>
-    <script src="~/content/js/js/bootstrap.min.js"></script>
-    <script src="~/content/js/js/jquery.scrollUp.min.js"></script>
-    <script src="~/content/js/js/price-range.js"></script>
-    <script src="~/content/js/js/jquery.prettyPhoto.js"></script>
-    <script src="~/content/js/js/main.js"></script>
+    var UserFormModel = {
+        firstName: ko.observable(),
+        secondName:ko.observable(),
+        adress: ko.observable(),
+        email: ko.observable(),
+        postCode: ko.observable(),
+    };
 
-    <script type="text/javascript">
+    function AddOrder(obj) {
+        var itemId = obj.getAttribute("data-item-id");
 
-        function AddOrder(obj) {
-            var dto = {
-                Id: obj.getAttribute("data-item-id"),
-                ProductWeight: 100
-            };
+        if (!(dictionary.hasOwnProperty(itemId))) {
+            dictionary[itemId] = step;
+        } else {
+            dictionary[itemId] += step;
+        }
+
+    };
+
+    function ConvertObjtoMass(obj) {
+        var mass = [];
+        Object.keys(obj).forEach(function (keys) {
+            mass.push({ Id: keys, ProductWeight: dictionary[keys] });
+        });
+        return mass;
+    }
+
+    function SendOrderToCart() {
+        if (Object.keys(dictionary).length !== 0) {
+            var elem = document.getElementById("#userForm");
             $.ajax({
                 cashe: false,
                 type: 'POST',
-                url: "@Url.Action("AddToRecycle", "Home")",
-                data: JSON.stringify(dto),
+                url: "@Url.Action("Cart", "Home")",
+                data: JSON.stringify(ConvertObjtoMass(dictionary)),
                 contentType: "application/json; charset=utf-8",
                 datatype: "json",
-                async: true
+                async: true,
+                success: function (result) {
+                    $("#dialogContent").html(result);
+                    $('#modDialog').modal('show');
+                    dictionary.totalPrice = CalculateTotalPrice();
+                    ko.applyBindings(UserFormModel);
+                    
+                }
             });
-        };
+        } else {
+            alert("Сначала выберите товары");
+        }
+    };
 
-        @*$('#CartBTN').click(function () {
+    function UpWeight(e) {
+        var tr = $(e).closest("[data-product-id]");
+        var prodictId = tr.attr("data-product-id");
+        var inputWeight = tr.find(".cart_quantity_input");
+        dictionary[prodictId] += step;
+        var weight = Number(inputWeight.val()) + step;
+        inputWeight.val(weight);
+        SetCategoryPrice(e);
+    }
+
+    function DownWeight(e) {
+        var tr = $(e).closest("[data-product-id]");
+        var prodictId = tr.attr("data-product-id");
+        var inputWeight = tr.find(".cart_quantity_input");
+        var weight = Number(inputWeight.val());
+        if (weight > step) {
+            weight -= step;
+            dictionary[prodictId] -= step;
+            inputWeight.val(weight);
+            SetCategoryPrice(e);
+        } else {
+            tr.remove();
+            delete dictionary[prodictId];
+        }
+    }
+
+    function DeleteProduct(e) {
+        var tr = $(e).closest("[data-product-id]");
+        var prodictId = tr.attr("data-product-id");
+        tr.remove();
+        delete dictionary[prodictId];
+    }
+
+    function SetCategoryPrice(e) {
+        var elem = $(e).closest("[data-product-id]");
+        var totalPrice = elem.find(".cart_total_price");
+        totalPrice[0].innerText = CalculateCategoryPrice(elem);
+    }
+
+    function CalculateCategoryPrice(tr) {
+        var elem = tr.children(".cart_price");
+        var retailPrice = Number(elem[0].innerText);
+        var productWeight = Number(tr.find("input.cart_quantity_input").val());
+        var newPrice = (retailPrice / 100) * productWeight;
+        CalculateTotalPrice();
+        return newPrice;
+    }
+
+    function CalculateTotalPrice() {
+        var obj = $("tr > td > p.cart_total_price");
+        for (i = 0; i < obj.length; i++) {
+            dictionary.totalPrice += Number(obj[i].innerText);
+        }
+        $("#totalPrice").text(dictionary.totalPrice);
+        return totalPrice;
+    }
+
+    function SendFullOrder() {
+        if (formObject.defValidateNumber !== 31 && Object.keys((dictionary).length === 0)) {
+            alert("заполните все поля формы"); // сюда функцию вставить 
+        } else {
+            formObject.mass = ConvertObjtoMass(dictionary);
+
             $.ajax({
                 cashe: false,
                 type: 'POST',
                 url: "@Url.Action("Order", "Home")",
-                data: JSON.stringify(order),
+                data: JSON.stringify(formObject),
                 contentType: "application/json; charset=utf-8",
                 datatype: "json",
-                async: true
+                async: true,
+                success: function (result) {
+                    alert(result);
+                }
             });
-        });*@
-    </script>
+        }
+    }
 
+    function GetName(e) {
+        var name = e.value;
+        if (name.length !== 0) {
+            SetSuccess(e, 1);
+            formObject.name = name;
+        } else {
+            SetError(e);
+            // тут вставить сброс бита
+        }
+    }
+
+    function GetSecondName(e) {
+        var secondName = e.value;
+        if (secondName.length !== 0) {
+            SetSuccess(e, 2);
+            formObject.secondName = secondName;
+        } else {
+            SetError(e);
+        }
+    }
+
+    function GetAdress(e) {
+        var adress = e.value;
+        if (adress.length !== 0) {
+            SetSuccess(e, 4);
+            formObject.adress = adress;
+        } else {
+            SetError(e);
+        }
+    }
+
+    function GetEmail(e) {
+        var regexp = /.+@@.+\..+/i;
+        var email = e.value;
+        if (email.search(regexp) !== -1) {
+            SetSuccess(e, 8);
+            formObject.Email = email;
+        } else {
+            SetError(e);
+        }
+    }
+
+    function GetPostcode(e) {
+        var postCode = e.value;
+        if (isNaN(postCode)) {
+            SetSuccess(e, 16);
+            formObject.postCode = postCode;
+        } else {
+            SetError(e);
+        }
+    }
+
+    function SetSuccess(e, bitNumber) {
+        $(e).css({ "border-color": "green", "border-width": "2px" });
+        formObject.defValidateNumber = formObject.defValidateNumber | bitNumber;
+    }
+
+    function SetError(e) {
+        $(e).css({ "border-color": "red", "border-width": "2px" });
+    }
+</script>
 </body>
 </html>

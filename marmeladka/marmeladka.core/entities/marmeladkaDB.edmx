@@ -59,6 +59,16 @@
           <Property Name="product_weight" Type="int" Nullable="false" />
           <Property Name="img" Type="varbinary(max)" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="user">
           <Key>
             <PropertyRef Name="id" />
@@ -68,7 +78,7 @@
           <Property Name="second_name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="adress" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="email" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="postcode" Type="int" Nullable="false" />
+          <Property Name="postcode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <Association Name="fk_action_orders">
           <End Role="order" Type="Self.order" Multiplicity="1" />
@@ -137,6 +147,7 @@
           <EntitySet Name="company" EntityType="Self.company" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="order" EntityType="Self.order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="product" EntityType="Self.product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="fk_action_orders" Association="Self.fk_action_orders">
             <End Role="order" EntitySet="order" />
@@ -199,7 +210,7 @@
           <Property Name="order_time" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="userId" Type="Guid" Nullable="false" />
           <NavigationProperty Name="action_order" Relationship="Self.fk_action_orders" FromRole="order" ToRole="action_order" />
-          <NavigationProperty Name="user" Relationship="Self.fk_orders_user" FromRole="order" ToRole="user" />
+          <NavigationProperty Name="user" Relationship="marmeladkaDBModel.fk_orders_user" FromRole="order" ToRole="user" />
         </EntityType>
         <EntityType Name="product">
           <Key>
@@ -216,18 +227,6 @@
           <NavigationProperty Name="category" Relationship="Self.fk_product_category" FromRole="product" ToRole="category" />
           <NavigationProperty Name="company" Relationship="Self.fk_product_company" FromRole="product" ToRole="company" />
           <Property Name="img" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="user">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Guid" Nullable="false" />
-          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="second_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="adress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="postcode" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="order" Relationship="Self.fk_orders_user" FromRole="user" ToRole="order" />
         </EntityType>
         <Association Name="fk_action_orders">
           <End Role="order" Type="Self.order" Multiplicity="1" />
@@ -277,25 +276,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_orders_user">
-          <End Role="user" Type="Self.user" Multiplicity="1" />
-          <End Role="order" Type="Self.order" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="user">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="order">
-              <PropertyRef Name="userId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="marmeladkaDBEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="action_order" EntityType="Self.action_order" />
           <EntitySet Name="category" EntityType="Self.category" />
           <EntitySet Name="company" EntityType="Self.company" />
           <EntitySet Name="order" EntityType="Self.order" />
           <EntitySet Name="product" EntityType="Self.product" />
-          <EntitySet Name="user" EntityType="Self.user" />
           <AssociationSet Name="fk_action_orders" Association="Self.fk_action_orders">
             <End Role="order" EntitySet="order" />
             <End Role="action_order" EntitySet="action_order" />
@@ -312,11 +298,13 @@
             <End Role="company" EntitySet="company" />
             <End Role="product" EntitySet="product" />
           </AssociationSet>
-          <AssociationSet Name="fk_orders_user" Association="Self.fk_orders_user">
+          <EntitySet Name="Admin" EntityType="marmeladkaDBModel.Admin" />
+          <EntitySet Name="sysdiagrams" EntityType="marmeladkaDBModel.sysdiagrams" />
+          <EntitySet Name="user" EntityType="marmeladkaDBModel.user" />
+          <AssociationSet Name="fk_orders_user" Association="marmeladkaDBModel.fk_orders_user">
             <End Role="user" EntitySet="user" />
             <End Role="order" EntitySet="order" />
           </AssociationSet>
-          <EntitySet Name="Admin" EntityType="marmeladkaDBModel.Admin" />
         </EntityContainer>
         <EntityType Name="Admin">
           <Key>
@@ -327,6 +315,40 @@
           <Property Name="Salt" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="second_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="adress" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="postcode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="order" Relationship="marmeladkaDBModel.fk_orders_user" FromRole="user" ToRole="order" />
+        </EntityType>
+        <Association Name="fk_orders_user">
+          <End Type="marmeladkaDBModel.user" Role="user" Multiplicity="1" />
+          <End Type="marmeladkaDBModel.order" Role="order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="order">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -383,18 +405,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="user">
-            <EntityTypeMapping TypeName="marmeladkaDBModel.user">
-              <MappingFragment StoreEntitySet="user">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="second_name" ColumnName="second_name" />
-                <ScalarProperty Name="adress" ColumnName="adress" />
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="postcode" ColumnName="postcode" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Admin">
             <EntityTypeMapping TypeName="marmeladkaDBModel.Admin">
               <MappingFragment StoreEntitySet="Admin">
@@ -402,6 +412,29 @@
                 <ScalarProperty Name="Salt" ColumnName="Salt" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="marmeladkaDBModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user">
+            <EntityTypeMapping TypeName="marmeladkaDBModel.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="postcode" ColumnName="postcode" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="adress" ColumnName="adress" />
+                <ScalarProperty Name="second_name" ColumnName="second_name" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
