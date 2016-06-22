@@ -1,19 +1,35 @@
-﻿@{
-    ViewBag.Title = "Login";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-}
-<div class="row" style="margin-top: 10%">
-    <div class="col-sm-2 col-sm-offset-5">
-        @using (Html.BeginForm("Login", "Admin", FormMethod.Get, new { @class = "form-horizontal" }))
-        {
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.TextBox("name", null, new { placeholder = "Введите имя", @class = "form-control" })
-            @Html.Password("password", null, new { placeholder = "Пароль", @class = "form-control" })
-            @Html.ValidationMessage("password")
-            <div style="margin-top: 4px;">
-                <button type="submit" class="btn btn-success" style="width: 45%;">Войти</button>
-                <button type="reset" class="btn btn-primary" style="width: 45%; margin-left: 20px;">Очистить</button>
+﻿@using System.Web.Optimization
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    @Styles.Render("~/bundles/css")
+</head>
+<body>
+    <section id="form">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-5 col-sm-offset-3">
+                    <div class="login-form">
+                        <h2>Login to your account</h2>
+                        @using (Html.BeginForm("Login", "Admin", FormMethod.Get, new { @class = "form-horizontal" }))
+                        {
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.TextBox("name", null, new { placeholder = "Введите имя", @class = "form-control" })
+                            @Html.Password("password", null, new { placeholder = "Пароль", @class = "form-control" })
+                            @Html.ValidationMessage("password")
+                            <div>
+                                <button type="submit" class="btn btn-success col-md-2" style="width: 48%;">Войти</button>
+                                <button type="reset" class="btn col-md-2" style="width: 48%; margin-left: 3%">Очистить</button>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
-        }
-    </div>
-</div>
+        </div>
+    </section>
+</body>
+</html>
+

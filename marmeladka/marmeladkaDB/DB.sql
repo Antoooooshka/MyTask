@@ -32,12 +32,15 @@ second_name nvarchar(100) NOT NULL,
 adress nvarchar(100) NOT NULL,
 email nvarchar(100) NOT NULL,
 postcode nvarchar(50) NOT NULL
+phone nvarchar(50)
 );
 
 CREATE TABLE [order](
 id uniqueidentifier NOT NULL PRIMARY KEY,
 order_time datetime NOT NULL,
 userId uniqueidentifier NOT NULL,
+[order-price] decimal,
+OrderWeight int,
 CONSTRAINT fk_orders_user FOREIGN KEY (userId) REFERENCES [user](id)
 );
 
@@ -56,3 +59,8 @@ Salt nvarchar(50) NOT NULL,
 [Password] nvarchar(50) NOT NULL
 );
 
+alter table action_order
+Add constraint order_constraint UNIQUE(productId,ordersId)
+
+alter table action_order
+add CurrentProductWeight int

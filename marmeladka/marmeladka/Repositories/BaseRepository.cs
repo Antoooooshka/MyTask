@@ -1,6 +1,11 @@
 ﻿using marmeladka.core.entities;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Transactions;
 
 namespace marmeladka.Repositories
 {
@@ -19,6 +24,11 @@ namespace marmeladka.Repositories
             _marmDb.SaveChanges();
         }
 
+        public async Task SaveChangesAsync()
+        {
+            await _marmDb.SaveChangesAsync();
+        }
+
         public virtual T Delete(Guid id)
         {
             var entity = DbSet.Find(id);
@@ -32,6 +42,25 @@ namespace marmeladka.Repositories
         public virtual void Update(T t)
         {
             _marmDb.Entry(t).State = EntityState.Modified;
+        }
+
+        protected virtual void UpdateRange(List<T> models)
+        {
+            for (int i = 0; i < models.Count; i++)
+            {
+                _marmDb.Entry(models[i]).State = EntityState.Modified;  
+            }
+                
+        }
+
+        protected void PerformTransaction(Action action)
+        {
+            using (var transaction = new TransactionScope())
+            {
+                action();
+                Savechanges();
+                transaction.Complete();
+            }
         }
     }
 }

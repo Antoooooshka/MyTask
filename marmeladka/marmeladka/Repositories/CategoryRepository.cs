@@ -6,10 +6,14 @@ namespace marmeladka.Repositories
 {
     public class CategoryRepository : BaseRepository<category>
     {
+        #region Controllers
         public CategoryRepository() : base(new marmeladkaDBEntities1())
         {
 
         }
+        #endregion
+
+
         public IEnumerable<category> GetAllCategory() 
         {
            return DbSet.ToList();

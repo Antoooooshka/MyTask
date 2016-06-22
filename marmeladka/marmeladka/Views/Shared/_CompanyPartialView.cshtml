@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<marmeladka.ViewModel.CompanyViewModel>
 
-<div class="brands_products">
+<div class="panel-group category-products" id="accordian">
     <!--brands_products-->
     <h2>Company</h2>
-    <div class="brands-name">
-        <ul class="nav nav-pills nav-stacked">
-            @foreach (var item in Model)
-            {
-                <li><a href="#">@item.Name</a></li>
-            }      
-        </ul>
-    </div>
+    @foreach (var item in Model)
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                 <h4 class="panel-title"><a href="javascript:void(0)">@item.Name<span class="pull-right"><i class="fa fa-plus"></i></span></a></h4>
+            </div>
+        </div> 
+    }
 </div>
 

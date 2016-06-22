@@ -1,9 +1,15 @@
-﻿namespace marmeladka.ViewModel
+﻿using System;
+
+namespace marmeladka.ViewModel
 {
     public class OrderViewModel
     {
-        public System.Guid Id { get; set; }
-        public System.DateTime Order_time { get; set; }
-        public System.Guid userId { get; set; }
+        public Guid Id { get; set; }
+        public DateTime Order_time { get; set; }
+        public Guid userId { get; set; }
+        public decimal? OrderPrice { get; set; }
+        public int? OrderWeight { get; set; }
+
+        public UserViewModel User{ get; set; }
     }
 }

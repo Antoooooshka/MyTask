@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace marmeladka.Repositories
 {
@@ -21,9 +22,9 @@ namespace marmeladka.Repositories
         {
             return DbSet.Find(id);
         }
-        public Admin ChekUniqueAdminName(string name)
-        {         
-            Admin model = DbSet.SingleOrDefault(x => x.Name == name);
+        public async Task<Admin> ChekUniqueAdminName(string name)
+        {
+            Admin model = await Task<Admin>.Factory.StartNew(() => DbSet.SingleOrDefault(x => x.Name == name));
             return model != null ? model : null;             
         }
     }

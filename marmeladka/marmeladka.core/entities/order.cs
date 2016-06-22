@@ -23,6 +23,8 @@ namespace marmeladka.core.entities
         public System.Guid id { get; set; }
         public System.DateTime order_time { get; set; }
         public System.Guid userId { get; set; }
+        public Nullable<decimal> order_price { get; set; }
+        public Nullable<int> OrderWeight { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<action_order> action_order { get; set; }

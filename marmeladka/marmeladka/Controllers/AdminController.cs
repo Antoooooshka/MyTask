@@ -1,13 +1,15 @@
 ﻿using marmeladka.Mappers;
 using marmeladka.AdminServise;
 using marmeladka.Repositories;
-using marmeladka.Validator;
 using marmeladka.ViewModel;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using marmeladka.core.entities;
 
 namespace marmeladka.Controllers
 {
@@ -21,10 +23,10 @@ namespace marmeladka.Controllers
         }
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult Login(string name, string password)
+        public async Task<ActionResult> Login(string name, string password)
         {
             AdminRepository admRep = new AdminRepository();
-            var admin = admRep.ChekUniqueAdminName(name);
+            var admin = await admRep.ChekUniqueAdminName(name);
             if (admin != null && admin.Password == Servise.GetHash(password, admin.Salt))
             {
                 FormsAuthentication.SetAuthCookie(name, false);
@@ -43,10 +45,13 @@ namespace marmeladka.Controllers
         }
 
 
-        public ActionResult GetAllAdmin()
+        public async Task<ActionResult> GetAllAdmin()
         {
             AdminRepository admRep = new AdminRepository();
-            var viewAdmin = admRep.GetAllAdmin().Select(x => Mapper.Map(x));
+            IEnumerable<AdminViewModel> viewAdmin = await Task<IEnumerable<AdminViewModel>>.Factory.StartNew(() =>
+            {
+                return admRep.GetAllAdmin().Select(x => Mapper.Map(x));
+            });
             return View(viewAdmin);
         }
         public ActionResult AddAdminForm()
@@ -69,13 +74,13 @@ namespace marmeladka.Controllers
                     admRep.Add(admin);
                     admRep.Savechanges();
                 }
-                else 
+                else
                 {
                     // отправить, что мол такое имя уже есть
                 }
 
             }
-            else 
+            else
             {
                 // отправить ошибки модели
             }
@@ -91,15 +96,36 @@ namespace marmeladka.Controllers
 
         }
 
-        public ActionResult Administration()
+        public async Task<ActionResult> Administration()
         {
-            return View();
+            ActionOrderRepository actionRep = new ActionOrderRepository();
+            OrderRepository orderRep = new OrderRepository();
+
+            var action = await Task<Dictionary<Guid, List<ActionViewModel>>>.Factory.StartNew(() =>
+            {
+                return actionRep.GetAllActionOrder().
+                    Select(x => Mapper.Map(x)).
+                    GroupBy(x => x.OrdersId).
+                    ToDictionary(k => k.Key, j => j.ToList());
+            });
+            ViewBag.FullOrdersWeight = await Task<int?>.Factory.StartNew(() => orderRep.CalculateFullWeight());
+            ViewBag.FullOrdersCost = await Task<decimal?>.Factory.StartNew(() => orderRep.CalculateFullOrdersCost());
+
+            return View(action);
         }
-        public ActionResult GetAllUsers()
+
+        public ActionResult DeleteOrder(Guid id)
+        {
+            OrderRepository orderRep = new OrderRepository();
+            orderRep.Delete(id);
+            return RedirectToAction("Administration", "Admin");
+        }
+
+        public async Task<ActionResult> GetAllUsers()
         {
             UserRepository userRepository = new UserRepository();
-            var user = userRepository.GetUsers().Select(x => Mapper.Map(x));
-            return PartialView("_UserPartialView", user);
+            var models = await Task<IEnumerable<UserViewModel>>.Factory.StartNew(() => userRepository.GetUsers().Select(x => Mapper.Map(x)));
+            return PartialView("_UserPartialView", models);
         }
         public ActionResult DeleteUser(Guid id)
         {
@@ -109,10 +135,13 @@ namespace marmeladka.Controllers
                 userRep.Savechanges();
             return RedirectToAction("GetAllUsers", "Admin");
         }
-        public ActionResult GetAllCompany()
+        public async Task<ActionResult> GetAllCompany()
         {
             CompanyRepository compRepository = new CompanyRepository();
-            var company = compRepository.GetAllCompany().Where(x => x.isDelete == false).Select(x => Mapper.Map(x));
+            var company = await Task<IEnumerable<CompanyViewModel>>.Factory.StartNew(() =>
+            {
+                return compRepository.GetAllCompany().Where(x => x.isDelete == false).Select(x => Mapper.Map(x));
+            });
             return View(company);
         }
         public ActionResult DeleteCompany(Guid id)
@@ -127,10 +156,10 @@ namespace marmeladka.Controllers
             }
             return RedirectToAction("GetAllCompany", "Admin");
         }
-        public ActionResult GetAllCategories()
+        public async Task<ActionResult> GetAllCategories()
         {
             CategoryRepository catRep = new CategoryRepository();
-            var category = catRep.GetAllCategory().Where(x => x.isDelete == false).Select(x => Mapper.Map(x));
+            var category = await Task<IEnumerable<CategoryViewModel>>.Factory.StartNew(() => catRep.GetAllCategory().Where(x => x.isDelete == false).Select(x => Mapper.Map(x)));
             return View(category);
         }
         public ActionResult DeleteCategory(Guid id)
@@ -145,10 +174,10 @@ namespace marmeladka.Controllers
             }
             return RedirectToAction("GetAllCategories", "Admin");
         }
-        public ActionResult GetAllProduct()
+        public async Task<ActionResult> GetAllProduct()
         {
             ProductRepository prodRep = new ProductRepository();
-            var product = prodRep.GetProducts().Select(x => Mapper.Map(x));
+            var product = await Task<IEnumerable<ProductViewModel>>.Factory.StartNew(() => prodRep.GetProducts().Select(x => Mapper.Map(x)));
             return View(product);
         }
         public ActionResult DeleteProduct(Guid id)
@@ -161,7 +190,7 @@ namespace marmeladka.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetAddOrUpdateCategoryForm(Guid? id)
+        public ActionResult GetOrUpdateCategoryForm(Guid? id)
         {
             CategoryRepository catRep = new CategoryRepository();
             if (id != null)
@@ -172,87 +201,106 @@ namespace marmeladka.Controllers
             return PartialView("_AddCategoryPartialView", new CategoryViewModel { Id = Guid.Empty, IsDelete = false });
         }
         [HttpPost]
-        public ActionResult AddOrUpdateCategory(CategoryViewModel viewModel)
+        public async Task<ActionResult> AddOrUpdateCategory(CategoryViewModel viewModel)
         {
-            if (Validation.Validate(viewModel))
+            if (ViewData.ModelState["Name"].Errors.Count == 0)
             {
                 CategoryRepository catRep = new CategoryRepository();
                 if (viewModel.Id == Guid.Empty)
                 {
                     var category = Mapper.Map(viewModel);
                     category.id = Guid.NewGuid();
-                    catRep.Add(category);
-                    catRep.Savechanges();
+                    var task = Task.Factory.StartNew(() => catRep.Add(category));
+                    await task.ContinueWith(t => catRep.Savechanges());
                 }
                 else
                 {
-                    var category = Mapper.Map(viewModel);
-                    catRep.Update(category);
-                    catRep.Savechanges();
+                    var task = Task<category>.Factory.StartNew(() => catRep.GetCategoryById(viewModel.Id));
+                    await task.ContinueWith(t =>
+                    {
+                        Mapper.Map(t.Result, viewModel);
+                        catRep.Savechanges();
+                    });
                 }
             }
             return RedirectToAction("GetAllCategories");
         }
 
         [HttpGet]
-        public ActionResult GetAddOrUpdateComanyForm(Guid? id)
+        public async Task<ActionResult> GetAddOrUpdateComanyForm(Guid? id)
         {
             CompanyRepository compRes = new CompanyRepository();
             if (id != null)
             {
-                var viewModel = Mapper.Map(compRes.GetCompanyById(id));
+                var viewModel = await Task<CompanyViewModel>.Factory.StartNew(() => Mapper.Map(compRes.GetCompanyById(id)));
                 return PartialView("_AddCompanyPartialView", viewModel);
             }
             return PartialView("_AddCompanyPartialView", new CompanyViewModel { Id = Guid.Empty, IsDelete = false });
         }
 
         [HttpPost]
-        public ActionResult AddOrUpdateComany(CompanyViewModel viewModel)
+        public async Task<ActionResult> AddOrUpdateComany(CompanyViewModel viewModel)
         {
-            if (Validation.Validate(viewModel))
+            if (ViewData.ModelState["Name"].Errors.Count == 0)
             {
                 CompanyRepository compRes = new CompanyRepository();
                 if (viewModel.Id == Guid.Empty)
                 {
                     var company = Mapper.Map(viewModel);
                     company.id = Guid.NewGuid();
-                    compRes.Add(company);
-                    compRes.Savechanges();
+                    Task task = Task.Factory.StartNew(() =>
+                    {
+                        compRes.Add(company);
+                    });
+                    await task.ContinueWith(t => compRes.Savechanges());
                 }
                 else
                 {
-                    var company = Mapper.Map(viewModel);
-                    compRes.Update(company);
-                    compRes.Savechanges();
+                    Task<company> task = Task<company>.Factory.StartNew(() => compRes.GetCompanyById(viewModel.Id));
+                    await task.ContinueWith(t =>
+                    {
+                        Mapper.Map(t.Result, viewModel);
+                        compRes.Savechanges();
+                    });
                 }
             }
             return RedirectToAction("GetAllCompany");
         }
 
         [HttpGet]
-        public ActionResult GetAddOrUpdateProductForm(Guid? id)
+        public async Task<ActionResult> GetAddOrUpdateProductForm(Guid? id)
         {
-            ViewBag.Categories = new CategoryRepository().GetAllCategory().Where(x => x.isDelete == false).Select(item => new SelectListItem { Text = item.name, Value = item.id.ToString() });
-            ViewBag.Companies = new CompanyRepository().GetAllCompany().Where(x => x.isDelete == false).Select(item => new SelectListItem { Text = item.name, Value = item.id.ToString() });
+            ViewBag.Categories = await Task<IEnumerable<SelectListItem>>.Factory.StartNew(() =>
+            {
+                return new CategoryRepository().GetAllCategory()
+                       .Where(x => x.isDelete == false)
+                       .Select(item => new SelectListItem { Text = item.name, Value = item.id.ToString() });
+            });
+            ViewBag.Companies = await Task<IEnumerable<SelectListItem>>.Factory.StartNew(() =>
+            {
+                return new CompanyRepository().GetAllCompany()
+                       .Where(x => x.isDelete == false)
+                       .Select(item => new SelectListItem { Text = item.name, Value = item.id.ToString() });
+            });
 
             ProductRepository productRes = new ProductRepository();
             if (id != null)
             {
-                var viewModels = Mapper.Map(productRes.GetProductById(id));
+                var viewModels = await Task<ProductViewModel>.Factory.StartNew(() => Mapper.Map(productRes.GetProductById(id)));
                 return PartialView("_AddProductPartialView", viewModels);
             }
             return PartialView("_AddProductPartialView", new ProductViewModel { Id = Guid.Empty });
         }
 
         [HttpPost]
-        public ActionResult AddOrUpdateProduct(ProductViewModel viewModel, HttpPostedFileBase img)
+        public ActionResult AddOrUpdateProduct(ProductViewModel viewModel, HttpPostedFileBase img) //TODO: await вешать на SaveChanges()?
         {
-            ProductRepository prodRep = new ProductRepository();
-            if (Validation.Validate(viewModel))
+            if (ModelState["Name"].Errors.Count == 0)
             {
+                ProductRepository prodRep = new ProductRepository();
                 if (viewModel.Id == Guid.Empty)
                 {
-                    var product = Mapper.Map(viewModel);
+                    product product = Mapper.Map(viewModel);
                     product.id = Guid.NewGuid();
                     if (img != null)
                     {
@@ -260,27 +308,26 @@ namespace marmeladka.Controllers
                         img.InputStream.Read(product.img, 0, img.ContentLength);
                     }
                     prodRep.Add(product);
-                    prodRep.Savechanges();
                 }
                 else
                 {
-                    var product = Mapper.Map(viewModel);
+                    product prod = prodRep.GetProductById(viewModel.Id);
+                    prod = Mapper.Map(prod, viewModel);
                     if (img != null)
                     {
-                        product.img = new byte[img.ContentLength];
-                        img.InputStream.Read(product.img, 0, img.ContentLength);
+                        prod.img = new byte[img.ContentLength];
+                        img.InputStream.Read(prod.img, 0, img.ContentLength);
                     }
-                    prodRep.Update(product);
-                    prodRep.Savechanges();
                 }
+                prodRep.Savechanges();
             }
             return RedirectToAction("GetAllProduct");
         }
 
-        public ActionResult GetImage(Guid id)
+        public async Task<ActionResult> GetImage(Guid id)
         {
             ProductRepository prodRep = new ProductRepository();
-            var image = prodRep.GetProductById(id).img;
+            var image = await Task<byte[]>.Factory.StartNew(() => prodRep.GetProductById(id).img);
             return image != null ? File(image, "image") : null;
         }
     }

@@ -36,13 +36,13 @@
                                     </td>
                                     <td class="cart_quantity">
                                         <div class="cart_quantity_button">
-                                            <a class="cart_quantity_up" href="javascript:void(0)" data-dind="click:" onclick="UpWeight(this)">+</a>
-                                            <input class="cart_quantity_input" type="text" name="quantity" value="@item.ProductWeight" autocomplete="off" size="4" readonly="readonly">
+                                            <a class="cart_quantity_up" data-max-weight="@item.ProductWeight" href="javascript:void(0)" onclick="UpWeight(this)">+</a>
+                                            <input class="cart_quantity_input" type="text" name="quantity" value="@item.CurrentWeight" autocomplete="off" size="4" readonly="readonly">
                                             <a class="cart_quantity_down" href="javascript:void(0)" onclick="DownWeight(this)">-</a>
                                         </div>
                                     </td>
                                     <td class="cart_total">
-                                        <p class="cart_total_price">@item.TotalPrice</p>
+                                        <p class="cart_total_price">@item.TotalCategoryPrice</p>
                                     </td>
                                     <td class="cart_delete">
                                         <a class="cart_quantity_delete" href="javascript:void(0)" onclick="DeleteProduct(this)"><i class="fa fa-times"></i></a>
@@ -61,21 +61,29 @@
                 <div class="row">
                     <div class="col-sm-12" id="userForm">
                         <div class="col-sm-6">
-                            <h4>Заполните форму:</h4>
-                            <input type="text" placeholder="Имя" data-bind="value:firstName" class="form-control input-lg" onblur="GetName(this)"/>
-                            <input type="text" placeholder="Фамилия" data-bind="value:secondName" class="form-control input-lg" onblur="GetSecondName(this)"/>
-                            <input type="text" placeholder="адресс" data-bind="value:adress" class="form-control input-lg" onblur="GetAdress(this)"/>
-                            <input type="text" placeholder="email" data-bind="value:email" class="form-control input-lg" onblur="GetEmail(this)"/>
-                            <input type="text" placeholder="postcode" data-bind="value:postCode" class="form-control input-lg" onblur="GetPostcode(this)"/>                         
+                            <h3>Заполните форму:</h3>
+                            <fieldset class="form-group">
+                                <input type="text" placeholder="Имя" data-bind="value: firstName" class="form-control input-lg" onblur="GetName(this)" />
+                                <input type="text" placeholder="Фамилия" data-bind="value: secondName" class="form-control input-lg" onblur="GetSecondName(this)" />
+                                <input type="text" placeholder="адресс" data-bind="value: adress" class="form-control input-lg" onblur="GetAdress(this)" />
+                                <input type="text" placeholder="Телефон" data-bind="value: phone" class="form-control input-lg" onblur="GetPhoneNumber((this))" />
+                                <input type="text" placeholder="email" data-bind="value: email" class="form-control input-lg" onblur="GetEmail(this)" />
+                                <input type="text" placeholder="postcode" data-bind="value: postCode" class="form-control input-lg" onblur="GetPostalCode(this)" />
+                            </fieldset>
                         </div>
                         <div class="col-sm-6">
-                            <p data-bind="text:firstName">Name</p>
-                            <p data-bind="text:secondName">Фамилия</p>
-                            <p data-bind="text:adress">Адресс</p>
-                            <p data-bind="text:email">Email</p>
-                            <p data-bind="text:postCode">Postcode</p>
-                            <h3 id="totalPrice"></h3>
-                            <button type="button" class="btn btn-default check_out" onclick="SendFullOrder()">Оформить заказ</button>
+                            <h3>Информация о заказе:</h3>
+                            <h4>Имя: <strong data-bind="text: firstName"></strong></h4>
+                            <h4>Фамилия: <strong data-bind="text: secondName"></strong></h4>
+                            <h4>Адресс: <strong data-bind="text: adress"></strong></h4>
+                            <h4>Телефон: <strong data-bind="text: phone"></strong></h4>
+                            <h4>Email: <strong data-bind="text: email"></strong></h4>
+                            <h4>Почтовый индекс: <strong data-bind="text: postCode"></strong></h4>
+                            <h4 style="border-bottom: 2px solid burlywood;">Полная стоимость заказа: <strong id="totalPrice"></strong>руб.</h4>
+                            <div style="margin-top: 20px;">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Добавить еще товаров</button>
+                                <button type="button" id="buyButton" class="btn btn-success" onclick="SendFullOrder()" disabled="disabled">Оформить заказ</button>
+                            </div>
                         </div>
                     </div>
                 </div>

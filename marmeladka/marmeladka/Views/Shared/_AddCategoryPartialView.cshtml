@@ -8,7 +8,7 @@
     {      
         <div class="modal-body">
             @Html.HiddenFor(x => x.Id)
-            @Html.TextBoxFor(x => x.Name, new { placeholder = "Введите имя категории", @class = "form-control" })
+            @Html.TextBoxFor(x => x.Name, new { placeholder = "Введите имя категории", @class = "form-control"})
             @Html.ValidationMessageFor(x => x.Name)
             @Html.HiddenFor(x => x.IsDelete)
         </div>

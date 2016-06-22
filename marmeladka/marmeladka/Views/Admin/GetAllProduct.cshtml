@@ -4,7 +4,6 @@
     ViewBag.Title = "GetAllProduct";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
 <table class="table table-hover">
     <thead>
         <tr>
@@ -15,13 +14,15 @@
             <th>Оптовая цена(100гр)</th>
             <th>Розничная цена(100гр)</th>
             <th>Вес на складе(грамм)</th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td><img src="@Url.Action("GetImage", "Admin", new { item.Id })" class="img-circle" width="40" height="45"/></td>
+                <td><img src="@Url.Action("GetImage", "Admin", new { item.Id })" class="img-circle" width="50" height="45"/></td>
                 <td>@item.Name</td>
                 <td>@item.Category.Name</td>
                 <td>@item.Company.Name</td>
@@ -45,13 +46,13 @@
     <div id="dialogContent" class="modal-dialog"></div>
 </div>
 
-<script type="text/ecmascript">
-    function AddOrUpdateModel(event) {
+<script type="text/javascript">
+    function AddOrUpdateModel(obj) {
         $.ajax({
             cashe: false,
             async: true,
             type: "GET",
-            url: "/Admin/GetAddOrUpdateProductForm/?id=" + event.getAttribute("data-model-id"),
+            url: "/Admin/GetAddOrUpdateProductForm/?id=" + obj.getAttribute("data-model-id"),
             success: function (result) {
                 $("#dialogContent").html(result);
                 $('#modDialog').modal('show');

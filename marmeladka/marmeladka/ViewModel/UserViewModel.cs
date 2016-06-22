@@ -5,6 +5,7 @@
         public System.Guid Id { get; set; }
         public string Name { get; set; }
         public string Second_name { get; set; }
+        public string Phone { get; set; }
         public string Adress { get; set; }
         public string Email { get; set; }
         public string Postcode { get; set; }

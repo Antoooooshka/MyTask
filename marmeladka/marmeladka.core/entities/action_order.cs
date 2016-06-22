@@ -17,6 +17,7 @@ namespace marmeladka.core.entities
         public System.Guid id { get; set; }
         public System.Guid productId { get; set; }
         public System.Guid ordersId { get; set; }
+        public Nullable<int> CurrentProductWeight { get; set; }
     
         public virtual order order { get; set; }
         public virtual product product { get; set; }

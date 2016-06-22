@@ -14,6 +14,8 @@ namespace marmeladka.DTOs
         public string Adress { get; set; }
         public string Email { get; set; }
         public string Postcode { get; set; }
+        public string Phone { get; set; }
+        public decimal? OrderPrice { get; set; }
         public List<ProductOrderDTO> ProductList { get; set; } 
     }
 }

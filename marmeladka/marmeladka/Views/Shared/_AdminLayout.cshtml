@@ -1,44 +1,83 @@
-﻿@{
+﻿@using System.Web.Optimization
+@{
     ViewBag.Title = "_AdminLayout";
 }
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Андминистратор</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    @Styles.Render("~/bundles/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/otherjs")
+   @* <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>*@
+    <style>
+        .modal-body > select {
+            margin-bottom: 5px;
+        }
+        .modal-body > input {
+            margin-bottom: 5px;
+        }
+        .table > thead > tr {
+            font-size: 18px;
+        }
+        .table > thead > tr > th {
+            border-bottom: 2px solid #fe980f;
+        }
+        .tooltip-table {
+            width: 100%;
+        }
+        .tooltip-table > thead > tr > th {
+            border-bottom: 2px solid #fe980f;
+            margin: 10px;
+        }
+        .tooltip-table > tbody > tr {
+            margin-top: 15px;
+        }
+        .tooltip-table > tbody > tr > td {
+            margin-right: 30px;
+        }
+        .action-table-body > div.row {
+            padding: 5px;
+            border-bottom: 1px solid rgb(221,221,221);
+        }
+        .action-table-body > div.row:hover {
+            background-color: #F5F5F5;
+        }
+    </style>
 </head>
-<body>
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="@Url.Action("Index", "Home")" style="color: #EF1F5A;">Marmeladka.by</a>
+    <body>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="@Url.Action("Index", "Home")" style="color: #f36868;font-family: fantasy;font-size: xx-large;">Marmeladka.by</a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav">
+                        <li><a href="@Url.Action("Administration", "Admin")">Home</a></li>
+                        <li><a href="@Url.Action("GetAllCategories", "Admin")">Категории</a></li>
+                        <li><a href="@Url.Action("GetAllCompany", "Admin")">Компания производитель</a></li>
+                        <li><a href="@Url.Action("GetAllProduct", "Admin")">Продукт</a></li>
+                        <li><a href="@Url.Action("GetAllUsers", "Admin")">Пользователи</a></li>
+                        <li><a href="@Url.Action("GetAllAdmin", "Admin")">Администраторы</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="@Url.Action("LogOut", "Admin")"><span class="glyphicon glyphicon-log-in"></span>@User.Identity.Name</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="collapse navbar-collapse" id="myNavbar">
-                <ul class="nav navbar-nav">
-                    <li><a href="@Url.Action("Administration","Admin")">Home</a></li>
-                    <li><a href="@Url.Action("GetAllCategories","Admin")">Категории</a></li>
-                    <li><a href="@Url.Action("GetAllCompany","Admin")">Компания производитель</a></li>
-                    <li><a href="@Url.Action("GetAllProduct","Admin")">Продукт</a></li>
-                    <li><a href="@Url.Action("GetAllUsers","Admin")">Пользователи</a></li>
-                    <li><a href="@Url.Action("GetAllAdmin","Admin")">Администраторы</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="@Url.Action("LogOut","Admin")"><span class="glyphicon glyphicon-log-in"></span>@User.Identity.Name</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    @RenderBody()
-</body>
+        </nav>
+        @RenderBody()
+    </body>
 </html>
 
 

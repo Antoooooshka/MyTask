@@ -1,6 +1,99 @@
-﻿@{
+﻿@model Dictionary<Guid, List<marmeladka.ViewModel.ActionViewModel>>
+
+@{
     ViewBag.Title = "Administration";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
-<h1>Текущие покупки</h1>
+@if (Model != null)
+{
+    <div class="col-md-offset-2 col-md-9" style="padding: 10px; height: 50px;">
+        <div class="col-md-4">Количество заказов: <b>@Model.Count</b></div>
+        <div class="col-md-4">Общий вес покупок: <b>@ViewBag.FullOrdersWeight</b> гр.</div>
+        <div class="col-md-4">Общая сумма покупок: <b>@ViewBag.FullOrdersCost</b> руб. </div>
+    </div>
+    
+    <div class="col-md-12" style="padding: 10px; border-bottom: 2px solid #fe980f; margin-top: 50px">
+        <div class="col-md-2">
+            <h4>Заказчик</h4>
+        </div>
+        <div class="col-md-2">
+            <h4>Телефон</h4>
+        </div>
+        <div class="col-md-2">
+            <h4>Время заказа</h4>
+        </div>
+        <div class="col-md-2">
+            <h4>Вес заказа</h4>
+        </div>
+        <div class="col-md-2">
+            <h4>Стоимость заказа</h4>
+        </div>
+        <div class="col-md-2">
+            <h4>После оформления</h4>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="action-table-body" style="margin-top: 30px;">
+            @foreach (var key in Model.Keys)
+            {
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="tooltip tooltip-effect-5">
+                            <div class="tooltip-item">
+                                <strong>@Model[key][0].Order.User.Second_name @Model[key][0].Order.User.Name</strong>
+                            </div>
+                            <div class="tooltip-content">
+                                <table class="tooltip-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Image</th>
+                                            <th>Имя продукта</th>
+                                            <th>Категория</th>
+                                            <th>Цена продажи</th>
+                                            <th>Вес</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (byte i = 0; i < Model[key].Count; i++)
+                                        {
+                                            <tr style="border-bottom: 1px ridge wheat;">
+                                                <td>
+                                                    <img src="@Url.Action("GetImage", "Admin", new { Model[key][i].Product.Id })" class="img-circle" width="50" height="45"/>
+                                                </td>
+                                                <td>
+                                                    @Model[key][i].Product.Name
+                                                </td>
+                                                <td>
+                                                    @Model[key][i].Product.Category.Name
+                                                </td>
+                                                <td>
+                                                    @Model[key][i].Product.Retail_price
+                                                </td>
+                                                <td>
+                                                    @Model[key][i].CurrentProductWeight
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">@Model[key][0].Order.User.Phone</div>
+                    <div class="col-md-2">@Model[key][0].Order.Order_time</div>
+                    <div class="col-md-2">@Model[key][0].Order.OrderWeight грамм</div>
+                    <div class="col-md-2">@Model[key][0].Order.OrderPrice руб.</div>
+                    <div class="col-md-2">
+                        <a class="btn btn-danger" href="@Url.Action("DeleteOrder","Admin", new{id = key})">Удалить</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="col-md-offset-2 col-md-6">
+        <h2>Упс, у нас ни одной покупки</h2>
+    </div>
+}

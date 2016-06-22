@@ -12,8 +12,8 @@ namespace marmeladka.Controllers
         public PartialViewResult GetProducts()
         {
             ProductRepository productRep = new ProductRepository();
-            var product = productRep.GetProducts().Select(x => Mapper.DtoMap(x));
-            return PartialView("_ProductPartialView",product);
+            var products = productRep.GetProducts().Select(x => Mapper.MapDto(x));
+            return PartialView("_ProductPartialView", products);
         }
 
         public ActionResult GetProductImage(Guid id)
@@ -21,6 +21,19 @@ namespace marmeladka.Controllers
             ProductRepository prodRep = new ProductRepository();
             var image = prodRep.GetProductById(id).img;
             return image != null ? File(image, "image") : null;
+        }
+
+        [HttpGet]
+        public PartialViewResult GetProductsByCategory(Guid id)
+        {
+            if (id != Guid.Empty)
+            {
+                ProductRepository prodRep = new ProductRepository();
+                var products = prodRep.GetProductsByCategory(id).Select(x => Mapper.MapDto(x));
+                return PartialView("_ProductPartialView", products);
+            }
+            return GetProducts();
+
         }
 
     }

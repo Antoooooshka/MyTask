@@ -12,6 +12,7 @@
           <Property Name="id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="productId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ordersId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CurrentProductWeight" Type="int" />
         </EntityType>
         <EntityType Name="Admin">
           <Key>
@@ -45,6 +46,8 @@
           <Property Name="id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="order_time" Type="datetime" Nullable="false" />
           <Property Name="userId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="order_price" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="OrderWeight" Type="int" />
         </EntityType>
         <EntityType Name="product">
           <Key>
@@ -79,6 +82,7 @@
           <Property Name="adress" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="email" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="postcode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="phone" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <Association Name="fk_action_orders">
           <End Role="order" Type="Self.order" Multiplicity="1" />
@@ -183,6 +187,7 @@
           <Property Name="ordersId" Type="Guid" Nullable="false" />
           <NavigationProperty Name="order" Relationship="Self.fk_action_orders" FromRole="action_order" ToRole="order" />
           <NavigationProperty Name="product" Relationship="Self.fk_action_products" FromRole="action_order" ToRole="product" />
+          <Property Name="CurrentProductWeight" Type="Int32" />
         </EntityType>
         <EntityType Name="category">
           <Key>
@@ -211,6 +216,8 @@
           <Property Name="userId" Type="Guid" Nullable="false" />
           <NavigationProperty Name="action_order" Relationship="Self.fk_action_orders" FromRole="order" ToRole="action_order" />
           <NavigationProperty Name="user" Relationship="marmeladkaDBModel.fk_orders_user" FromRole="order" ToRole="user" />
+          <Property Name="order_price" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="OrderWeight" Type="Int32" />
         </EntityType>
         <EntityType Name="product">
           <Key>
@@ -336,6 +343,7 @@
           <Property Name="email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="postcode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="order" Relationship="marmeladkaDBModel.fk_orders_user" FromRole="user" ToRole="order" />
+          <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="fk_orders_user">
           <End Type="marmeladkaDBModel.user" Role="user" Multiplicity="1" />
@@ -358,6 +366,7 @@
           <EntitySetMapping Name="action_order">
             <EntityTypeMapping TypeName="marmeladkaDBModel.action_order">
               <MappingFragment StoreEntitySet="action_order">
+                <ScalarProperty Name="CurrentProductWeight" ColumnName="CurrentProductWeight" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="productId" ColumnName="productId" />
                 <ScalarProperty Name="ordersId" ColumnName="ordersId" />
@@ -385,6 +394,8 @@
           <EntitySetMapping Name="order">
             <EntityTypeMapping TypeName="marmeladkaDBModel.order">
               <MappingFragment StoreEntitySet="order">
+                <ScalarProperty Name="OrderWeight" ColumnName="OrderWeight" />
+                <ScalarProperty Name="order_price" ColumnName="order_price" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="order_time" ColumnName="order_time" />
                 <ScalarProperty Name="userId" ColumnName="userId" />
@@ -429,6 +440,7 @@
           <EntitySetMapping Name="user">
             <EntityTypeMapping TypeName="marmeladkaDBModel.user">
               <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="phone" ColumnName="phone" />
                 <ScalarProperty Name="postcode" ColumnName="postcode" />
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="adress" ColumnName="adress" />

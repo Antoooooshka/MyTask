@@ -1,14 +1,10 @@
 ﻿@model IEnumerable<marmeladka.ViewModel.CategoryViewModel>
-<div class="panel-group category-products" id="accordian">
-    <!--category-productsr-->
-    <h2>Category</h2>
+<ul class="nav nav-tabs">
+    <li><a href="javascript:void(0)" data-category-id="@Guid.Empty" onclick="GetByCategory(this)">Все</a></li>
     @foreach (var item in Model)
     {
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title"><a href="#">@item.Name</a></h4>
-            </div>
-        </div>
+        <li>
+            <a href="javascript:void(0)" data-category-id="@item.Id" onclick="GetByCategory(this)">@item.Name</a>
+        </li>
     }
-</div>
-
+</ul>

@@ -58,6 +58,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -130,6 +131,7 @@
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="DTOs\OrderRequestDTO.cs" />
     <Compile Include="DTOs\ProductDTO.cs" />
@@ -138,11 +140,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Mapper\Mapper.cs" />
+    <Compile Include="Repositories\ActionOrderRepository.cs" />
     <Compile Include="Repositories\AdminRepository.cs" />
     <Compile Include="Repositories\CategoryRepository.cs" />
     <Compile Include="Repositories\CompanyRepository.cs" />
+    <Compile Include="Repositories\OrderRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
-    <Compile Include="Validator\Validation.cs" />
     <Compile Include="ViewModel\ActionViewModel.cs" />
     <Compile Include="ViewModel\AdminViewModel.cs" />
     <Compile Include="ViewModel\CategoryViewModel.cs" />
@@ -183,6 +186,7 @@
     <Content Include="content\css\prettyPhoto.css" />
     <Content Include="content\css\price-range.css" />
     <Content Include="content\css\responsive.css" />
+    <Content Include="content\css\tooltip-classic.css" />
     <Content Include="content\fonts\fontawesome-webfont.svg" />
     <Content Include="content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="content\img\back.png" />
@@ -193,6 +197,8 @@
     <Content Include="content\img\logo.png" />
     <Content Include="content\img\logo1.png" />
     <Content Include="content\img\pricing.png" />
+    <Content Include="content\img\social_link_vk.png" />
+    <Content Include="content\img\vkontakte.png" />
     <Content Include="content\js\bootstrap\css\bootstrap-responsive.css" />
     <Content Include="content\js\bootstrap\css\bootstrap-responsive.min.css" />
     <Content Include="content\js\bootstrap\css\bootstrap.css" />

@@ -1,5 +1,4 @@
 ﻿@using System.Web.Optimization
-@using System.Web.UI.WebControls
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -12,9 +11,6 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/knockout")
     @Scripts.Render("~/bundles/otherjs")
-
-    @*<script src="~/content/js/js/jquery.js"></script>
-    <script src="~/content/js/knockout-3.4.0.js"></script>*@
     <!--[if lt IE 9]>
     <script src="~/content/js/js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
@@ -27,16 +23,17 @@
             <!--header-middle-->
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <div class="logo pull-left">
                             <a href="@Url.Action("Index", "Home")">
                                 <img src="~/content/img/logo1.png" alt="Marmeladka.by" id="logoimg" /></a>
                         </div>
                     </div>
-                    <div class="col-sm-8">
+                    <div class="col-sm-6">
                         <div class="shop-menu pull-right">
                             <ul class="nav navbar-nav">
-                                <li><a id="CartBTN" href="javascript:void(0)" onclick="SendOrderToCart()"><i class="fa fa-shopping-cart"></i>Моя корзина <b id="productCount" style="padding-right: 10px; color: yellow;">0</b></a></li>
+                                <li><a href="http://vk.com/public92434211"><img src="~/content/img/social_link_vk.png" style="margin-top: 0px; margin-right: 0px;"/></a></li>
+                                <li><a id="CartBTN" href="javascript:void(0)" onclick="SendOrderToCart()"><i class="fa fa-shopping-cart"></i><span class="badge" id="badgeProductCount" style="padding: 10px 15px; font-size: 20px; border-radius: 7px;">0</span></a></li>
                             </ul>
                         </div>
 
@@ -173,205 +170,262 @@
 
     </footer>
     <!--/Footer-->
-<script type="text/javascript">
-    
-    var i = 0, step = 100, validationNumber = 0;
-    var dictionary = {
-        totalPrice: 0
-    };
-    var formObject = {
-        defValidateNumber: 0
-    };
+    <script type="text/javascript">
+        var cashDoc = document;
+        var quantity = 100;
+        var price = 0;
+        var formObject = {};
+        var dictionary = {};
 
-    var UserFormModel = {
-        firstName: ko.observable(),
-        secondName:ko.observable(),
-        adress: ko.observable(),
-        email: ko.observable(),
-        postCode: ko.observable(),
-    };
+        var UserFormModel = {
+            defValidateNumber: ko.observable(),
+            firstName: ko.observable(),
+            secondName: ko.observable(),
+            phone: ko.observable(),
+            adress: ko.observable(),
+            email: ko.observable(),
+            postCode: ko.observable()
+        };
 
-    function AddOrder(obj) {
-        var itemId = obj.getAttribute("data-item-id");
-
-        if (!(dictionary.hasOwnProperty(itemId))) {
-            dictionary[itemId] = step;
-        } else {
-            dictionary[itemId] += step;
-        }
-
-    };
-
-    function ConvertObjtoMass(obj) {
-        var mass = [];
-        Object.keys(obj).forEach(function (keys) {
-            mass.push({ Id: keys, ProductWeight: dictionary[keys] });
+        UserFormModel.defValidateNumber.subscribe(function () {
+            if (UserFormModel.defValidateNumber() === 63) {
+                $("#buyButton").removeAttr("disabled");
+            } else {
+                $("#buyButton").attr("disabled", "disabled");
+            }
         });
-        return mass;
-    }
 
-    function SendOrderToCart() {
-        if (Object.keys(dictionary).length !== 0) {
-            var elem = document.getElementById("#userForm");
-            $.ajax({
-                cashe: false,
-                type: 'POST',
-                url: "@Url.Action("Cart", "Home")",
-                data: JSON.stringify(ConvertObjtoMass(dictionary)),
-                contentType: "application/json; charset=utf-8",
-                datatype: "json",
-                async: true,
-                success: function (result) {
-                    $("#dialogContent").html(result);
-                    $('#modDialog').modal('show');
-                    dictionary.totalPrice = CalculateTotalPrice();
-                    ko.applyBindings(UserFormModel);
-                    
+
+        function AddOrder(obj) {
+            var itemId = obj.getAttribute("data-item-id");
+
+            if (!(dictionary.hasOwnProperty(itemId))) {
+                var retailPrice = obj.getAttribute("data-retail-price");
+                dictionary[itemId] = {
+                    itemQuantity: quantity,
+                    itemRetailPrice: Number(retailPrice)
                 }
-            });
-        } else {
-            alert("Сначала выберите товары");
+                SetBadgeProductCount();
+            } else {
+                dictionary[itemId].itemQuantity += quantity;
+            }
+        };
+
+        function SetBadgeProductCount() {
+            $("#badgeProductCount").text(Object.keys(dictionary).length);
         }
-    };
 
-    function UpWeight(e) {
-        var tr = $(e).closest("[data-product-id]");
-        var prodictId = tr.attr("data-product-id");
-        var inputWeight = tr.find(".cart_quantity_input");
-        dictionary[prodictId] += step;
-        var weight = Number(inputWeight.val()) + step;
-        inputWeight.val(weight);
-        SetCategoryPrice(e);
-    }
+        function ConvertObjtoMass(obj) {
+            var mass = [];
+            Object.keys(obj).forEach(function (keys) {
+                mass.push({
+                    Id: keys,
+                    CurrentWeight: dictionary[keys].itemQuantity,
+                    ProductCost: dictionary[keys].itemRetailPrice
+                });
+            });
+            return mass;
+        }
 
-    function DownWeight(e) {
-        var tr = $(e).closest("[data-product-id]");
-        var prodictId = tr.attr("data-product-id");
-        var inputWeight = tr.find(".cart_quantity_input");
-        var weight = Number(inputWeight.val());
-        if (weight > step) {
-            weight -= step;
-            dictionary[prodictId] -= step;
-            inputWeight.val(weight);
+        function SendOrderToCart() {
+            if (Object.keys(dictionary).length !== 0) {
+                $.ajax({
+                    cashe: false,
+                    type: 'POST',
+                    url: "@Url.Action("Cart", "Order")",
+                    data: JSON.stringify(ConvertObjtoMass(dictionary)),
+                    contentType: "application/json; charset=utf-8",
+                    datatype: "json",
+                    async: true,
+                    success: function (result) {
+                        $("#dialogContent").html(result);
+                        $('#modDialog').modal('show');
+                        var form = cashDoc.getElementById("userForm");
+                        CalculateTotalPrice();
+                        ko.cleanNode(form);
+                        ko.applyBindings(UserFormModel, form);
+                    }
+                });
+            } else {
+                alert("Сначала выберите товары");
+            }
+        };
+
+        function UpWeight(e) {
+            var tr = $(e).closest("[data-product-id]");
+            var prodictId = tr.attr("data-product-id");
+            var maxWeight = Number(e.getAttribute("data-max-weight"));
+            var inputWeight = tr.find(".cart_quantity_input");
+            if (dictionary[prodictId].itemQuantity !== maxWeight) {
+                dictionary[prodictId].itemQuantity += quantity;
+                var weight = Number(inputWeight.val()) + quantity;
+                inputWeight.val(weight);
+            } else {
+                alert("Простите, а у нас больше нет(");
+            }
             SetCategoryPrice(e);
-        } else {
+            CalculateTotalPrice();
+        }
+
+        function DownWeight(e) {
+            var tr = $(e).closest("[data-product-id]");
+            var prodictId = tr.attr("data-product-id");
+            var inputWeight = tr.find(".cart_quantity_input");
+            var weight = Number(inputWeight.val());
+            if (weight > quantity) {
+                weight -= quantity;
+                dictionary[prodictId].itemQuantity -= quantity;
+                inputWeight.val(weight);
+                SetCategoryPrice(e);
+                CalculateTotalPrice();
+            } else {
+                tr.remove();
+                delete dictionary[prodictId];
+                SetBadgeProductCount();
+                CalculateTotalPrice();
+            }
+        }
+
+        function DeleteProduct(e) {
+            var tr = $(e).closest("[data-product-id]");
+            var prodictId = tr.attr("data-product-id");
             tr.remove();
             delete dictionary[prodictId];
+            SetBadgeProductCount();
+            CalculateTotalPrice();
         }
-    }
 
-    function DeleteProduct(e) {
-        var tr = $(e).closest("[data-product-id]");
-        var prodictId = tr.attr("data-product-id");
-        tr.remove();
-        delete dictionary[prodictId];
-    }
-
-    function SetCategoryPrice(e) {
-        var elem = $(e).closest("[data-product-id]");
-        var totalPrice = elem.find(".cart_total_price");
-        totalPrice[0].innerText = CalculateCategoryPrice(elem);
-    }
-
-    function CalculateCategoryPrice(tr) {
-        var elem = tr.children(".cart_price");
-        var retailPrice = Number(elem[0].innerText);
-        var productWeight = Number(tr.find("input.cart_quantity_input").val());
-        var newPrice = (retailPrice / 100) * productWeight;
-        CalculateTotalPrice();
-        return newPrice;
-    }
-
-    function CalculateTotalPrice() {
-        var obj = $("tr > td > p.cart_total_price");
-        for (i = 0; i < obj.length; i++) {
-            dictionary.totalPrice += Number(obj[i].innerText);
+        function SetCategoryPrice(e) {
+            var elem = $(e).closest("[data-product-id]");
+            var totalPrice = elem.find(".cart_total_price");
+            totalPrice[0].innerText = CalculateCategoryPrice(elem[0].getAttribute("data-product-id"));
         }
-        $("#totalPrice").text(dictionary.totalPrice);
-        return totalPrice;
-    }
 
-    function SendFullOrder() {
-        if (formObject.defValidateNumber !== 31 && Object.keys((dictionary).length === 0)) {
-            alert("заполните все поля формы"); // сюда функцию вставить 
-        } else {
-            formObject.mass = ConvertObjtoMass(dictionary);
+        function CalculateCategoryPrice(itemId) {
+            var newPrice = dictionary[itemId].itemQuantity * (dictionary[itemId].itemRetailPrice / 100);
+            return newPrice;
+        }
 
+        function CalculateTotalPrice() {
+            var totalPrice = 0;
+            for (var key in dictionary) {
+                totalPrice += dictionary[key].itemQuantity * (dictionary[key].itemRetailPrice / 100);
+            }
+            formObject.OrderPrice = totalPrice;
+            $("#totalPrice").text(totalPrice);
+        }
+
+        function SendFullOrder() {
+            if (UserFormModel.defValidateNumber() !== 63 && Object.keys((dictionary).length === 0)) {
+                alert("заполните все поля формы"); // сюда функцию вставить 
+            } else {
+                formObject.productList = ConvertObjtoMass(dictionary);
+
+                $.ajax({
+                    cashe: false,
+                    type: 'POST',
+                    url: "@Url.Action("AddNewActionOrder", "Order")",
+                    data: JSON.stringify(formObject),
+                    contentType: "application/json; charset=utf-8",
+                    datatype: "json",
+                    async: true,
+                    success: function (result) {
+                        alert(result);
+                    }
+                });
+            }
+        }
+
+        var bitNumber = 0;
+
+        function GetName(obj) {
+            bitNumber = 1;
+            if (obj.value.length > 0) {
+                formObject.Name = obj.value;
+                SetSuccess(obj, bitNumber);
+            } else {
+                SetError(obj, bitNumber);
+            }
+        }
+
+        function GetSecondName(obj) {
+            bitNumber = 2;
+            if (obj.value.length > 0) {
+                formObject.Second_name = obj.value;
+                SetSuccess(obj, bitNumber);
+            } else {
+                SetError(obj, bitNumber);
+            }
+        }
+
+        function GetAdress(obj) {
+            bitNumber = 4
+            if (obj.value.length > 0) {
+                formObject.adress = obj.value;
+                SetSuccess(obj, bitNumber);
+            } else {
+                SetError(obj, bitNumber);
+            }
+        }
+
+
+        function GetPhoneNumber(obj) {
+            bitNumber = 8;
+            if (!(~obj.value.search(/([a-zа-яё])/i)) & obj.value.length > 5) {
+                formObject.phone = obj.value;
+                SetSuccess(obj, bitNumber);
+            } else {
+                SetError(obj, bitNumber);
+            }
+        }
+
+        function GetEmail(obj) {
+            bitNumber = 16
+            var regexp = /.+@@.+\..+/i;
+            var email = obj.value;
+            if (email.search(regexp) !== -1) {
+                SetSuccess(obj, bitNumber);
+                formObject.Email = email;
+            } else {
+                SetError(obj, bitNumber);
+            }
+        }
+
+        function GetPostalCode(obj) {
+            bitNumber = 32;
+            if (!(~obj.value.search(/([a-zа-яё])/i)) & obj.value.length > 1) {
+                SetSuccess(obj, bitNumber);
+                formObject.postCode = obj.value;
+            } else {
+                SetError(obj, bitNumber);
+            }
+        }
+
+        function SetSuccess(obj, bit) {
+            $(obj).css({ "border-color": "#3c763d", "border-width": "2px", "margin-bottom": "1px" });
+            UserFormModel.defValidateNumber(UserFormModel.defValidateNumber() | bit);
+        }
+
+        function SetError(obj, bit) {
+            $(obj).css({ "border-color": "red", "border-width": "2px", "margin-bottom": "1px" });
+            if (UserFormModel.defValidateNumber() & bit) {
+                UserFormModel.defValidateNumber(UserFormModel.defValidateNumber() ^ bit);
+            }
+        }
+
+        function GetByCategory(obj) {
+            var id = obj.getAttribute("data-category-id");
             $.ajax({
                 cashe: false,
-                type: 'POST',
-                url: "@Url.Action("Order", "Home")",
-                data: JSON.stringify(formObject),
-                contentType: "application/json; charset=utf-8",
-                datatype: "json",
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                url: "/Product/GetProductsByCategory/?id=" + id,
                 async: true,
                 success: function (result) {
-                    alert(result);
+                    $("#product-content").html(result);
                 }
             });
         }
-    }
-
-    function GetName(e) {
-        var name = e.value;
-        if (name.length !== 0) {
-            SetSuccess(e, 1);
-            formObject.name = name;
-        } else {
-            SetError(e);
-            // тут вставить сброс бита
-        }
-    }
-
-    function GetSecondName(e) {
-        var secondName = e.value;
-        if (secondName.length !== 0) {
-            SetSuccess(e, 2);
-            formObject.secondName = secondName;
-        } else {
-            SetError(e);
-        }
-    }
-
-    function GetAdress(e) {
-        var adress = e.value;
-        if (adress.length !== 0) {
-            SetSuccess(e, 4);
-            formObject.adress = adress;
-        } else {
-            SetError(e);
-        }
-    }
-
-    function GetEmail(e) {
-        var regexp = /.+@@.+\..+/i;
-        var email = e.value;
-        if (email.search(regexp) !== -1) {
-            SetSuccess(e, 8);
-            formObject.Email = email;
-        } else {
-            SetError(e);
-        }
-    }
-
-    function GetPostcode(e) {
-        var postCode = e.value;
-        if (isNaN(postCode)) {
-            SetSuccess(e, 16);
-            formObject.postCode = postCode;
-        } else {
-            SetError(e);
-        }
-    }
-
-    function SetSuccess(e, bitNumber) {
-        $(e).css({ "border-color": "green", "border-width": "2px" });
-        formObject.defValidateNumber = formObject.defValidateNumber | bitNumber;
-    }
-
-    function SetError(e) {
-        $(e).css({ "border-color": "red", "border-width": "2px" });
-    }
-</script>
+    </script>
 </body>
 </html>
