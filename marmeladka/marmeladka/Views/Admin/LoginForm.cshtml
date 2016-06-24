@@ -19,7 +19,7 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             @Html.TextBox("name", null, new { placeholder = "Введите имя", @class = "form-control" })
                             @Html.Password("password", null, new { placeholder = "Пароль", @class = "form-control" })
-                            @Html.ValidationMessage("password")
+                            @Html.ValidationMessage("password")                        
                             <div>
                                 <button type="submit" class="btn btn-success col-md-2" style="width: 48%;">Войти</button>
                                 <button type="reset" class="btn col-md-2" style="width: 48%; margin-left: 3%">Очистить</button>

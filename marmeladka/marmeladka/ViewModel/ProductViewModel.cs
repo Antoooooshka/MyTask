@@ -21,6 +21,7 @@ namespace marmeladka.ViewModel
         public int? Product_weight { get; set; }
         [Required(ErrorMessage = "Обязательное поле")]
         public Guid CompanyId { get; set; }
+        public bool Recomended { get; set; }
         public CompanyViewModel Company { get; set; }
         public CategoryViewModel Category { get; set; }
         public byte[] Img { get; set; }

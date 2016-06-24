@@ -6,6 +6,7 @@ body {
     font-family: 'Roboto', sans-serif;
     position: relative;
     font-weight: 400;
+    background-color: rgba(255, 255, 249, 0.29)
 }
 
 ul li {
@@ -200,12 +201,13 @@ a#scrollUp {
         font-weight: 300;
         padding: 0;
         padding-right: 50px;
-        margin-top: 20px;
+        margin-top: 11px;
     }
 
 
         .shop-menu ul li a i {
             margin-right: 10px;
+            margin-top: 10px;
         }
 
 
@@ -858,10 +860,10 @@ h2.title {
 }
 
 .productinfo h2 {
-    color: #FE980F;
+    color: #696763;
     font-family: 'Roboto', sans-serif;
     font-size: 24px;
-    font-weight: 700;
+    font-weight: 300;
 }
 
 .product-overlay h2 {
@@ -940,16 +942,16 @@ h2.title {
 
 
 .add-to-cart {
-    background: #F5F5ED;
+    background: rgb(245, 61, 103);
     border: 0 none;
     border-radius: 0;
-    color: #696763;
+    color: #ffffff;
     font-family: 'Roboto', sans-serif;
     font-size: 15px;
     margin-bottom: 25px;
 }
 
-    .add-to-cart:hover {
+.add-to-cart:hover {
         background: #FE980F;
         border: 0 none;
         border-radius: 0;
@@ -995,7 +997,7 @@ h2.title {
 }
 
     .category-tab ul {
-        border-bottom: 1px solid #FE980F;
+        border-bottom: 2px solid #EFB917;
         list-style: none outside none;
         margin: 0 0 30px;
         padding: 0;
@@ -1005,11 +1007,11 @@ h2.title {
         .category-tab ul li a {
             border: 0 none;
             border-radius: 0;
-            color: #FE980F;
+            color: #696763;
             display: block;
             font-family: 'Roboto', sans-serif;
-            font-size: 14px;
-            text-transform: uppercase;
+            font-size: 17px;
+            font-weight: 300
         }
 
             .category-tab ul li a:hover {
@@ -1601,6 +1603,9 @@ h2.title {
 
 #cart_items .cart_info .cart_description h4 {
     margin-bottom: 0;
+    padding-bottom: 12px;
+    color: #696763;
+    font-weight: 300;
 }
 
     #cart_items .cart_info .cart_description h4 a {
@@ -1618,12 +1623,17 @@ h2.title {
 #cart_items .cart_info .cart_price p {
     color: #696763;
     font-size: 18px;
+    padding-top: 10px;
+    padding-left: 30px;
+    font-weight: 300;
 }
 
 
 #cart_items .cart_info .cart_total_price {
-    color: #FE980F;
-    font-size: 24px;
+    color: #696763;
+    font-size: 22px;
+    margin-top: 10px;
+    font-weight: 300
 }
 
 .cart_product {

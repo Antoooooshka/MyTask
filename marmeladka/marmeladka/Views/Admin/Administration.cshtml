@@ -16,10 +16,12 @@
         <div class="col-md-2">
             <h4>Заказчик</h4>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-1"><h4>Адресс</h4></div>
+        <div class="col-md-1"><h4>Индекс</h4></div>
+        <div class="col-md-1">
             <h4>Телефон</h4>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-1">
             <h4>Время заказа</h4>
         </div>
         <div class="col-md-2">
@@ -45,42 +47,44 @@
                             <div class="tooltip-content">
                                 <table class="tooltip-table">
                                     <thead>
-                                        <tr>
-                                            <th>Image</th>
-                                            <th>Имя продукта</th>
-                                            <th>Категория</th>
-                                            <th>Цена продажи</th>
-                                            <th>Вес</th>
-                                        </tr>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Имя продукта</th>
+                                        <th>Категория</th>
+                                        <th>Цена продажи</th>
+                                        <th>Вес</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        @for (byte i = 0; i < Model[key].Count; i++)
-                                        {
-                                            <tr style="border-bottom: 1px ridge wheat;">
-                                                <td>
-                                                    <img src="@Url.Action("GetImage", "Admin", new { Model[key][i].Product.Id })" class="img-circle" width="50" height="45"/>
-                                                </td>
-                                                <td>
-                                                    @Model[key][i].Product.Name
-                                                </td>
-                                                <td>
-                                                    @Model[key][i].Product.Category.Name
-                                                </td>
-                                                <td>
-                                                    @Model[key][i].Product.Retail_price
-                                                </td>
-                                                <td>
-                                                    @Model[key][i].CurrentProductWeight
-                                                </td>
-                                            </tr>
-                                        }
+                                    @for (byte i = 0; i < Model[key].Count; i++)
+                                    {
+                                        <tr style="border-bottom: 1px ridge wheat;">
+                                            <td>
+                                                <img src="@Url.Action("GetImage", "Admin", new {Model[key][i].Product.Id})" class="img-circle" width="50" height="45"/>
+                                            </td>
+                                            <td>
+                                                @Model[key][i].Product.Name
+                                            </td>
+                                            <td>
+                                                @Model[key][i].Product.Category.Name
+                                            </td>
+                                            <td>
+                                                @Model[key][i].Product.Retail_price
+                                            </td>
+                                            <td>
+                                                @Model[key][i].CurrentProductWeight
+                                            </td>
+                                        </tr>
+                                    }
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2">@Model[key][0].Order.User.Phone</div>
-                    <div class="col-md-2">@Model[key][0].Order.Order_time</div>
+                    <div class="col-md-1">@Model[key][0].Order.User.Adress</div>
+                    <div class="col-md-1">@Model[key][0].Order.User.Postcode</div>
+                    <div class="col-md-1">@Model[key][0].Order.User.Phone</div>
+                    <div class="col-md-1">@Model[key][0].Order.Order_time</div>
                     <div class="col-md-2">@Model[key][0].Order.OrderWeight грамм</div>
                     <div class="col-md-2">@Model[key][0].Order.OrderPrice руб.</div>
                     <div class="col-md-2">

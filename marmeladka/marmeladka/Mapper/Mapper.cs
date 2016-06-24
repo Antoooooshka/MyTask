@@ -1,6 +1,7 @@
 ﻿using marmeladka.core.entities;
 using marmeladka.ViewModel;
 using System;
+using System.Web.Mvc;
 using marmeladka.DTOs;
 
 namespace marmeladka.Mappers
@@ -91,7 +92,8 @@ namespace marmeladka.Mappers
                 CompanyId = product.companyId,
                 Company = Map(product.company),
                 Category = Map(product.category),
-                Img = product.img
+                Img = product.img,
+                Recomended = product.Recomended
             };
             return productView;
         }
@@ -106,7 +108,8 @@ namespace marmeladka.Mappers
                 product_weight = productView.Product_weight ?? 0,
                 categoryId = productView.CategoryId,
                 companyId = productView.CompanyId,
-                img = productView.Img
+                img = productView.Img,
+                Recomended = productView.Recomended
             };
             return product;
         }
@@ -126,7 +129,8 @@ namespace marmeladka.Mappers
             {
                 Id = admin.Id,
                 Name = admin.Name,
-                Password = admin.Password
+                Password = admin.Password,
+                CanBeDeleted = admin.CanBeDeleted
             };
             return viewModel;
         }
@@ -177,6 +181,7 @@ namespace marmeladka.Mappers
             prod.companyId = viewModel.CompanyId;
             prod.opt_price = (decimal)viewModel.Opt_price;
             prod.retail_price = (decimal)viewModel.Retail_price;
+            prod.Recomended = viewModel.Recomended;
             return prod;
         }
 

@@ -28,6 +28,7 @@ namespace marmeladka.core.entities
         public System.Guid companyId { get; set; }
         public int product_weight { get; set; }
         public byte[] img { get; set; }
+        public bool Recomended { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<action_order> action_order { get; set; }

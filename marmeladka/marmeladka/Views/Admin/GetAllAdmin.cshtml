@@ -17,7 +17,10 @@
         {          
             <tr>
                 <td>@item.Name</td>
-                <td><a href="@Url.Action("DeleteAdmin", "Admin", new { id = item.Id })" class="btn btn-danger">Удалить</a></td>
+                @if (item.CanBeDeleted)
+                {
+                    <td><a href="@Url.Action("DeleteAdmin", "Admin", new { id = item.Id })" class="btn btn-danger">Удалить</a></td>
+                }               
             </tr>
         }
     </tbody>

@@ -8,6 +8,7 @@ namespace marmeladka.ViewModel
         public Guid Id { get; set; }
         [Required]
         public string Name { get; set; }
+        public bool CanBeDeleted { get; set; }
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }

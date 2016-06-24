@@ -26,7 +26,7 @@ namespace marmeladka.Controllers
         public async Task<ActionResult> Login(string name, string password)
         {
             AdminRepository admRep = new AdminRepository();
-            var admin = await admRep.ChekUniqueAdminName(name);
+            var admin = await admRep.ChekUniqueAdminName(name);         
             if (admin != null && admin.Password == Servise.GetHash(password, admin.Salt))
             {
                 FormsAuthentication.SetAuthCookie(name, false);
@@ -60,17 +60,19 @@ namespace marmeladka.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddAdmin(AdminViewModel viewModel)
+        public async Task<ActionResult> AddAdmin(AdminViewModel viewModel) // сходить в базу и смотреть главную сущность
         {
             if (ModelState.IsValid)
             {
                 AdminRepository admRep = new AdminRepository();
-                if (admRep.ChekUniqueAdminName(viewModel.Name) == null)
+                var model = await admRep.ChekUniqueAdminName(viewModel.Name);
+                if (model == null)
                 {
                     var admin = Mapper.Map(viewModel);
                     admin.Id = Guid.NewGuid();
                     admin.Salt = Servise.CreateSalt();
                     admin.Password = Servise.GetHash(viewModel.Password, admin.Salt);
+                    admin.CanBeDeleted = true;
                     admRep.Add(admin);
                     admRep.Savechanges();
                 }
@@ -78,7 +80,6 @@ namespace marmeladka.Controllers
                 {
                     // отправить, что мол такое имя уже есть
                 }
-
             }
             else
             {
@@ -282,14 +283,13 @@ namespace marmeladka.Controllers
                        .Where(x => x.isDelete == false)
                        .Select(item => new SelectListItem { Text = item.name, Value = item.id.ToString() });
             });
-
             ProductRepository productRes = new ProductRepository();
             if (id != null)
             {
                 var viewModels = await Task<ProductViewModel>.Factory.StartNew(() => Mapper.Map(productRes.GetProductById(id)));
                 return PartialView("_AddProductPartialView", viewModels);
             }
-            return PartialView("_AddProductPartialView", new ProductViewModel { Id = Guid.Empty });
+            return PartialView("_AddProductPartialView", new ProductViewModel { Id = Guid.Empty, Recomended = false});
         }
 
         [HttpPost]

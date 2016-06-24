@@ -4,6 +4,7 @@
     ViewBag.Title = "GetAllProduct";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+
 <table class="table table-hover">
     <thead>
         <tr>
@@ -21,32 +22,58 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td><img src="@Url.Action("GetImage", "Admin", new { item.Id })" class="img-circle" width="50" height="45"/></td>
-                <td>@item.Name</td>
-                <td>@item.Category.Name</td>
-                <td>@item.Company.Name</td>
-                <td>@item.Opt_price</td>
-                <td>@item.Retail_price</td>
-                <td>@item.Product_weight</td>
-                <td>
-                    <button type="button" data-model-id="@item.Id" onclick="AddOrUpdateModel(this)" class="btn btn-success">Обновить</button>
-                </td>
-                <td><a href="@Url.Action("DeleteProduct", "Admin", new { id = item.Id })" class="btn btn-danger">Удалить</a></td>
-            </tr>
+            if (item.Recomended)
+            {
+                <tr style="background-color: #fbffaa">
+                    <td>
+                        <img src="@Url.Action("GetImage", "Admin", new { item.Id })" class="img-circle" width="50" height="45"/></td>
+                    <td>@item.Name</td>
+                    <td>@item.Category.Name</td>
+                    <td>@item.Company.Name</td>
+                    <td>@item.Opt_price</td>
+                    <td>@item.Retail_price</td>
+                    <td>@item.Product_weight</td>
+
+                    <td>
+                        <button type="button" data-model-id="@item.Id" onclick="AddOrUpdateModel(this)" class="btn btn-success">Обновить</button>
+                    </td>
+                    <td><a href="@Url.Action("DeleteProduct", "Admin", new { id = item.Id })" class="btn btn-danger">Удалить</a></td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td>
+                        <img src="@Url.Action("GetImage", "Admin", new { item.Id })" class="img-circle" width="50" height="45"/></td>
+                    <td>@item.Name</td>
+                    <td>@item.Category.Name</td>
+                    <td>@item.Company.Name</td>
+                    <td>@item.Opt_price</td>
+                    <td>@item.Retail_price</td>
+                    <td>@item.Product_weight</td>
+
+                    <td>
+                        <button type="button" data-model-id="@item.Id" onclick="AddOrUpdateModel(this)" class="btn btn-success">Обновить</button>
+                    </td>
+                    <td><a href="@Url.Action("DeleteProduct", "Admin", new { id = item.Id })" class="btn btn-danger">Удалить</a></td>
+                </tr>
+            }
+
         }
     </tbody>
 </table>
 
-<div class="col-md-1 ">
+<div class="col-md-1">
     <button class="btn btn-primary" type="button" onclick="AddOrUpdateModel(this)">Добавить</button>
 </div>
+
 
 <div id="modDialog" class="modal fade">
     <div id="dialogContent" class="modal-dialog"></div>
 </div>
 
 <script type="text/javascript">
+
     function AddOrUpdateModel(obj) {
         $.ajax({
             cashe: false,
