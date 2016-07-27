@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="col-md-8">
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @*@Scripts.Render("~/bundles/bootstrapjs")*@
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+        var token = "7e455d951963a28ba9c83ca3f958aa30ab862764df2c9854e7ff11d43c46f376ec422a957f41fe0fc4980";
+        var appKey = "4dlrnBQrVy5VJoa35dMw";
+        var user = {};
+        var requestDetail = {
+            url: "https://oauth.vk.com/authorize",
+            client_id: "5546300",
+            display: "popup",
+            scope: 4198402,
+            dataType: 'jsonp',
+            returnUrl: "https://oauth.vk.com/blank.html",
+            response_type: "token",
+            version: 5.52
+        };
+
+
+        
+
+        $("#get_token").click(function () {
+            window.location.href = requestDetail.url + "?" + "client_id=" + requestDetail.client_id + "&" + "display=" + requestDetail.display + "&" +
+                 "scope=" + requestDetail.scope + "&" + "response_type=" + requestDetail.response_type;                       
+        })
+
+        $("#get_near").click(function () {
+            var script = document.createElement('SCRIPT');
+            script.src = "https://api.vk.com/method/users.getNearby?latitude=55.75441927&longitude=37.62042209&radius=3&access_token=96d7665413f99ee456951186807d0fc116c0b479230a27a674061744755c3f6734ea01654f7fd0fcc7520&V=5.53&callback=GetNearPeople";
+            document.getElementsByTagName("head")[0].appendChild(script);
+        });
+
+        function GetNearPeople(result) {
+            $("#nearPeopleCOntainer").text(result.response);
+        }
+    </script>
+</body>
+</html>
