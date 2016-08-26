@@ -1,0 +1,59 @@
+﻿@model KudaPostupat.Models.UniversityViewModel
+
+@{
+    ViewBag.Title = "AddUniversity";
+    Layout = "~/Views/Layout's/_BackEndLayout.cshtml";
+}
+
+<section id="main-content">
+    <section class="wrapper">
+        <div class="row">            
+            <div class="col-md-3">
+                <h2>AddUniversityForm</h2>
+                @using (Html.BeginForm("AddUniversity", "Admin", FormMethod.Get))
+                {
+                    <div>
+                        @Html.LabelFor(x => x.Name)
+                        @Html.TextBoxFor(x => x.Name, new { @class = "form-control", placeholder = "Введите Имя универа" })
+                    </div>
+                    <div>
+                        @Html.LabelFor(x => x.Title)
+                        @Html.TextBoxFor(x => x.Title, new { @class = "form-control", placeholder = "Введите аббревиатуру" })
+                    </div>
+                    <div>
+                        Страна
+                        @Html.TextBoxFor(x => x.CountryId, new { @class = "form-control", placeholder = "Выберите страну" })  
+                    </div>
+                    <div>
+                        Регион
+                        @Html.TextBoxFor(x => x.RegionId, new { @class = "form-control", placeholder = "Выберите регион" })
+                    </div>
+                    <div>
+                        Город
+                        @Html.TextBoxFor(x => x.CityId, new { @class = "form-control", placeholder = "Выберите город" })
+                    </div>
+                    <div>
+                        @Html.LabelFor(x => x.WebSite)
+                        @Html.TextBoxFor(x => x.WebSite, new { @class = "form-control", placeholder = "Введите название сайта" })
+                    </div>
+                    <div>
+                        @Html.LabelFor(x => x.Email)
+                        @Html.TextBoxFor(x => x.Email, new { @class = "form-control", placeholder = "Введите умаил" })
+                    </div>
+                    <div>
+                        @Html.LabelFor(x => x.Telephone)
+                        @Html.TextBoxFor(x => x.Telephone, new { @class = "form-control", placeholder = "Введите телефон" })
+                    </div>
+                    <div>
+                        @Html.LabelFor(x => x.Address)
+                        @Html.TextBoxFor(x => x.Address, new { @class = "form-control", placeholder = "Введите адресс" })
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-success">Создать</button>
+                        <button type="reset" class="btn btn-danger">Стереть</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</section>
